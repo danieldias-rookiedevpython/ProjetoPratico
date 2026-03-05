@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from Controllers import AgendaController
+from Agenda.API.Controllers import AgendaController
 from provider import  router_factory
 from Controllers import AgendaController
 
