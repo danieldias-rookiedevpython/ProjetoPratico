@@ -44,12 +44,6 @@ cd nome_do_projeto
 poetry install
 ```
 
-Ativar shell do ambiente virtual:
-
-```bash
-poetry shell
-```
-
 ---
 
 ## 4. Adicionar dependências
