@@ -6,7 +6,7 @@ authors = [
     {name = "Lisboa-dev",email = "matheusllisboas@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<4.0"
 
 dependencies = [
     "fastapi (>=0.135.1,<0.136.0)",
@@ -15,7 +15,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "mypy (>=1.19.1,<2.0.0)"
+    "mypy (>=1.19.1,<2.0.0)",
+    "taskipy (>=1.14.1,<2.0.0)"
 ]
 
 
@@ -34,3 +35,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 start = "src.API.server:main"
 
+
+[tool.taskipy.tasks]
+start2 = "uvicorn src.API.server:app --reload"
+check = "mypy ."
