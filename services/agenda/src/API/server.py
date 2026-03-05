@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from router import router
-
+from Controllers import AgendaController
+from provider import  router_factory
 from Controllers import AgendaController
 
 app = FastAPI()
 
-app.include_router(router)
+app.include_router(router_factory())
 
 def main():
     import uvicorn

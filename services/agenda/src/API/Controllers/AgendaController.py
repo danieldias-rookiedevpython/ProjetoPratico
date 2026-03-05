@@ -1,9 +1,5 @@
-
 from Interfaces import UseCasesAgendaInterface
 from fastapi import APIRouter, Depends
-
-def get_controller_factory():
-    return AgendaController(UseCasesAgendaInterface())
 
 
 
