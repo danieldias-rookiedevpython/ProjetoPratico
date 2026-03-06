@@ -1,6 +1,6 @@
 from site import getuserbase
 from fastapi import APIRouter, Depends
-from API.Controllers.AgendaController import AgendaController, get_controller_factory
+from src.Agenda.API.Controllers.AgendaController import AgendaController, get_controller_factory
 import asyncio
 
 
@@ -18,10 +18,10 @@ def create_user(
     return controller.create_agendamento(name)
 '''
 
+
+#com class
+
 '''
-com class
-
-
 
     from fastapi import APIRouter, Depends
 
@@ -40,10 +40,9 @@ class AgendaRouter:
         return self.controller.create_agenda(name)
 '''
 
-
+#com função usando depends
 '''
 router = APIRouter(prefix="/agenda")
-
 
 @router.post("/")
 def create_agenda(
@@ -54,11 +53,27 @@ def create_agenda(
 
 '''
 
-
-
+#com class usando depends
+'''
 
 from fastapi import APIRouter, Depends
 
+class AgendaRouter:
+    def __init__(self, controller: AgendaController):
+        self.controller = controller
+       
+
+    # rota como método de classe
+    async def create_agenda(self, name: str):
+        return self.controller.create_agenda(name)
+    
+
+'''
+
+
+
+#class AgendaRouter resumida
+'''
 class AgendaRouter:
     def __init__(self, controller: AgendaController):
         self.controller = controller
@@ -66,19 +81,9 @@ class AgendaRouter:
         self._setup_routes()
 
     def _setup_routes(self):
-        self.router.post("/")(self.create_agenda)
-
-    # rota como método de classe
-    async def create_agenda(self, name: str):
-        return self.controller.create_agenda(name)
-    
-
-
-
-
-
-
-
+        # rota vinculada ao método da classe
+        self.router.post("/")(self.controller.create_agenda)
+'''
 
 
 

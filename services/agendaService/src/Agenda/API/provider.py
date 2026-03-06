@@ -1,10 +1,8 @@
 
-from API.Controllers.AgendaController import AgendaController
-from API.router import AgendaRouter
-from Aplication.UseCases.exampleHandler import UseCasesAgenda
-from Infra.Repositorys.AgendaRepository import AgendaRepository
+from ..Aplication.UseCases.createUseCase import UseCasesAgenda
+from ..Infra.Repositorys.AgendaRepository import AgendaRepository
 
-
+#uma forma
 '''
 def get_repository_factory():
     # Aqui você pode criar e configurar a instância do seu repositório
@@ -24,8 +22,21 @@ def get_controller_factory():
     return AgendaController(get_usecase_factory())
 
 '''
+
+#forma 2
+'''
 def router_factory():
     repository = AgendaRepository()
     usecase = UseCasesAgenda(repository)
     controller = AgendaController(usecase)
     return AgendaRouter(controller).router
+
+'''
+
+#atual
+def useCase_factory():
+    repository = AgendaRepository()
+    usecase = UseCasesAgenda(repository)
+    return usecase
+  
+    
