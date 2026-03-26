@@ -40,6 +40,8 @@ class AgendaRouter:
         return self.controller.create_agenda(name)
 '''
 
+
+
 #com função usando depends
 '''
 router = APIRouter(prefix="/agenda")
