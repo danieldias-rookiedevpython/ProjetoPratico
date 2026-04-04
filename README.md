@@ -1,5 +1,5 @@
 # Sistema de Agendamento Médico
-
+**LEIA OS ARQUIVOS DA PASTA `Arquivos_Explicativos`**
 ## 1. Visão Geral
 
 Este projeto consiste em um **Sistema de Agendamento Médico** baseado em:
