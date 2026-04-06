@@ -1,5 +1,5 @@
 
-class Agenda:
+class AgendaEntity:
     def __init__(self, id: IdAgenda, name: str, consultas: list[Consulta] = [], eventos: list[Evento] = [], pacientes: list[Paciente] = [], profissionais: list[Profissional] = [], especialidades: list[Especialidade] = [], horarios: list[Horario] = []):
         self.id = id
         self.name = name

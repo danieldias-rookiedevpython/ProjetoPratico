@@ -6,5 +6,8 @@ from typing import Protocol
 #não existe em runtime, é apenas para verificação estática de tipos
 
 class IUseCasesAgenda(Protocol):
-    def create_agendamento(self, data: dict) -> dict: ...
-    def get_agendamento(self, agendamento_id: int) -> dict: ...
+    def __init__(self):
+        pass
+    def execute(self, name: str):
+        pass
+ 

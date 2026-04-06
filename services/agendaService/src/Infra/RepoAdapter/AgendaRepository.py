@@ -1,4 +1,6 @@
-class AgendaRepository:
+import IAgendaRepository from "../../Domain/Repository/iAgendaRepository"
+
+class AgendaRepository(IAgendaRepository):
     def __init__(self):
         self.agendas = []
 

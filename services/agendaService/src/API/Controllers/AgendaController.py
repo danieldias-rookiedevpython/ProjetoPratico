@@ -23,3 +23,65 @@ class AgendaController:
 
 
 
+    @routerAgenda.put(
+        "/",
+        #dependencies= Depends(hookFunction)
+    )
+    def update_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
+        return useCase.execute(name)
+    
+
+
+
+    @routerAgenda.patch(
+        "/",
+        #dependencies= Depends(hookFunction)
+    )
+    def update_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
+        return useCase.execute(name)
+    
+
+
+
+    @routerAgenda.post(
+        "/",
+        #dependencies= Depends(hookFunction)
+    )
+    def delete_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
+        return useCase.execute(name)
+    
+
+
+
+    @routerAgenda.post(
+        "/",
+        #dependencies= Depends(hookFunction)
+    )
+    def list_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
+            return useCase.execute(name)
+    
+
+
+
+    @routerAgenda.post(
+        "/",
+        #dependencies= Depends(hookFunction)
+    )
+    def get_agenda_profissional(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
+            return useCase.execute(name)
+    
+
+
+    
+    @routerAgenda.post(
+        "/",
+        #dependencies= Depends(hookFunction)
+    )
+    def list_agenda_profissionais(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
+            return useCase.execute(name)
+
+
+
+    #admin metodes
+
+    #super admin metodes

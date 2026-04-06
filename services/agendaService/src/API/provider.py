@@ -1,6 +1,6 @@
 
-from ..Aplication.UseCases.createUseCase import UseCasesAgenda
-from ..Infra.Repositorys.AgendaRepository import AgendaRepository
+from ..modules.Agenda.Aplication.UseCases.createUseCase import UseCasesAgenda
+from ..Infra import AgendaRepository
 
 #uma forma
 '''
