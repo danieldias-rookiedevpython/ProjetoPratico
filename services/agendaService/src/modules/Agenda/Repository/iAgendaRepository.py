@@ -1,6 +1,4 @@
-import abc
+from typing import Protocol
 
-class IAgendaRepository(abc.ABC):
-    @abc.abstractmethod
-    def get_agendas(self):
-        raise NotImplementedError
+class IUserRepository(Protocol):
+    def save(self, user: User) -> None: ...

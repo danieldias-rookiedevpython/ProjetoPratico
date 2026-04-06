@@ -5,10 +5,9 @@ class CreateAgendaUseCase:
 
     def __init__(self, repository: IAgendaRepository):
         self.repository = repository
-        self.agenda = AgendaEntity()
 
     def execute(self, name: str):
         # Lógica para criar uma agenda
-        new_agenda = {"name": name}
+        new_agenda = AgendaEntity(id=None, name=name) 
         self.repository.save(new_agenda)
         return new_agenda
