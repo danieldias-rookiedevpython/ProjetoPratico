@@ -3,5 +3,7 @@ class UseCasesAgenda:
         pass
 
     def create_agendamento(self, name: str):
-        # Lógica para criar um agendamento
+        if not name:
+            raise ValueError("Nome é obrigatório")
+
         return {"message": f"Agendamento criado para {name}"}
