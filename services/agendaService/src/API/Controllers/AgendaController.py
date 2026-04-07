@@ -1,87 +1,37 @@
-from src.Agenda.API.Interfaces.UseCasesAgendaInterface import IUseCasesAgenda
-from fastapi import APIRouter,Depends
-from src.Agenda.API.provider import useCase_factory
-from fastapi_restful.cbv import cbv
-
-
-routerAgenda = APIRouter(
-    prefix="/agenda", 
-    tags=["Agenda"],
-    #dependencies= Depends(hookFunction)
+from fastapi import APIRouter
+from src.modules.Agenda.Aplication.Service.AgendaService import AgendaService
+from src.Infra.RepoAdapter.AgendaRepository import AgendaRepository
+from src.modules.Agenda.Domain.Entities.AgendaEntity import (
+    AgendaCreate,
+    AgendaUpdate,
 )
 
-@cbv(routerAgenda)
-class AgendaController:
-  
-    @routerAgenda.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def create_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-        return useCase.execute(name)
-    
+routerAgenda = APIRouter(prefix="/agenda", tags=["Agenda"])
+
+repository = AgendaRepository()
+service = AgendaService(repository)
 
 
-
-    @routerAgenda.put(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def update_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-        return useCase.execute(name)
-    
+@routerAgenda.post("/")
+def create(agenda: AgendaCreate):
+    return service.create(agenda)
 
 
-
-    @routerAgenda.patch(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def update_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-        return useCase.execute(name)
-    
+@routerAgenda.get("/")
+def list_all():
+    return service.list_all()
 
 
-
-    @routerAgenda.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def delete_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-        return useCase.execute(name)
-    
+@routerAgenda.get("/{agenda_id}")
+def get_by_id(agenda_id: int):
+    return service.get_by_id(agenda_id)
 
 
-
-    @routerAgenda.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def list_agenda(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-            return useCase.execute(name)
-    
+@routerAgenda.put("/{agenda_id}")
+def update(agenda_id: int, agenda: AgendaUpdate):
+    return service.update(agenda_id, agenda)
 
 
-
-    @routerAgenda.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def get_agenda_profissional(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-            return useCase.execute(name)
-    
-
-
-    
-    @routerAgenda.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-    def list_agenda_profissionais(self, name: str,  useCase: IUseCasesAgenda = Depends(useCase_factory)):
-            return useCase.execute(name)
-
-
-
-    #admin metodes
-
-    #super admin metodes
+@routerAgenda.delete("/{agenda_id}")
+def delete(agenda_id: int):
+    return service.delete(agenda_id)

@@ -1,11 +1,27 @@
+from pydantic import BaseModel
+from datetime import date, time
+from typing import Optional
 
-class AgendaEntity:
-    def __init__(self, id: IdAgenda, name: str, consultas: list[Consulta] = [], eventos: list[Evento] = [], pacientes: list[Paciente] = [], profissionais: list[Profissional] = [], especialidades: list[Especialidade] = [], horarios: list[Horario] = []):
-        self.id = id
-        self.name = name
 
-    def __repr__(self): 
-        return f"Agenda(id={self.id}, name={self.name})"
+class AgendaBase(BaseModel):
+    paciente: str
+    profissional: str
+    data: date
+    horario: time
+    observacao: Optional[str] = None
 
-    def __str__(self):
-        return f"Agenda(id={self.id}, name={self.name})"
+
+class AgendaCreate(AgendaBase):
+    pass
+
+
+class AgendaUpdate(BaseModel):
+    paciente: Optional[str] = None
+    profissional: Optional[str] = None
+    data: Optional[date] = None
+    horario: Optional[time] = None
+    observacao: Optional[str] = None
+
+
+class AgendaEntity(AgendaBase):
+    id: int
