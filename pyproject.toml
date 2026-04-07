@@ -5,7 +5,7 @@ description = ""
 authors = [
     {name = "Lisboa-dev",email = "matheusllisboas@gmail.com"}
 ]
-requires-python = ">=3.11"
+requires-python = ">3.11, <4.0"
 
 
 [build-system]
@@ -14,3 +14,14 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 
+[tool.poetry.dependencies]
+taskipy = "^1.14.1"
+
+[tool.taskipy.tasks]
+start = """
+docker stack deploy \
+  --compose-file stack.yml \
+  --compose-file services/api/service.yml \
+  --compose-file services/worker/service.yml \
+  minha-stack
+"""

@@ -1,14 +1,11 @@
 from src.Agenda.API.Interfaces.UseCasesAgendaInterface import IUseCasesAgenda
-from fastapi import APIRouter,Depends
+from fastapi import Depends
 from src.Agenda.API.provider import useCase_factory
 from fastapi_restful.cbv import cbv
+from ..router import routerAgenda
 
 
-routerAgenda = APIRouter(
-    prefix="/agenda", 
-    tags=["Agenda"],
-    #dependencies= Depends(hookFunction)
-)
+
 
 @cbv(routerAgenda)
 class AgendaController:
