@@ -1,9 +1,9 @@
-from typing import List, Optional
-from src.modules.Agenda.Domain.Entities.AgendaEntity import (
-    AgendaCreate,
-    AgendaEntity,
-    AgendaUpdate,
-)
+from typing import List, Optional, Any
+
+AgendaCreate = Any
+AgendaEntity = Any
+AgendaUpdate = Any
+
 from src.modules.Agenda.Repository.AgendaRepository import AgendaRepository
 
 

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 import structlog
 
-from src.API.Controllers.AgendaController import routerAgenda
+# from src.API.Controllers.AgendaController import routerAgenda
 
 logger = structlog.get_logger()
 
@@ -12,7 +12,7 @@ app = FastAPI(
     description="CRUD de agendamento"
 )
 
-app.include_router(routerAgenda)
+# app.include_router(routerAgenda)
 
 @app.get("/health")
 def health():
