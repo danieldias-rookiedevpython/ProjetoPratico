@@ -40,3 +40,13 @@ def useCase_factory():
     return usecase
   
     
+    
+    from .connectManager import (
+     ConnectionManager
+  )
+    
+    
+    
+    
+#intancias singleton
+

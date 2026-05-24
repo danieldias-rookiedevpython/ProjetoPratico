@@ -1,10 +1,12 @@
+
 from fastapi import APIRouter
 from src.modules.Agenda.Aplication.Service.AgendaService import AgendaService
-from src.Infra.RepoAdapter.AgendaRepository import AgendaRepository
-from src.modules.Agenda.Domain.Entities.AgendaEntity import (
+from src.Infra.RepoAdapter.commands.AgendaRepoSqlAlchemy import AgendaRepository
+from ...modules.Agenda.Domain.Entities.agendaEntity import (
     AgendaCreate,
     AgendaUpdate,
 )
+
 
 routerAgenda = APIRouter(prefix="/agenda", tags=["Agenda"])
 
