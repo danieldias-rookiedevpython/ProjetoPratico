@@ -1,23 +1,21 @@
 import datetime
-
-from src.Modules.Agenda.Domain.Entities.agendaClinicaEntity import BaseCalendarSlot
-from src.Modules.Agenda.Domain.Entities.agendaMedicEntity import DoctorCalendarSlot
+from ..ValueObjects.domainEvents import DomainEvents
+from src.Modules.Agenda.Domain.Entities.doctor import Doctor
+from src.Modules.Agenda.Domain.ValueObjects.enumAppoimentType import AppoimentType
+from src.Modules.Agenda.Domain.ValueObjects.id import ID
+from src.Modules.Agenda.Domain.ValueObjects.rangeTime import RangeTime
 from src.Modules.Agenda.Domain.ValueObjects.slotStatus import SlotStatus
 
 
 class Appointment:
-    id: int
-
+    
+    id: ID
+    room_id: int
     patient_id: int
     doctor_id: int
-
-    room_id: int
-
-    doctor_slot_id: int
-    base_slot_id: int
-
-    starts_at: datetime
-    ends_at: datetime
+    type: AppoimentType
+    time: RangeTime
+    _events: list[DomainEvents]
     
 
     def __init__(self, id: int, patient_id: int, doctor_id: int, room_id: int, doctor_slot_id: int, base_slot_id: int, starts_at: datetime, ends_at: datetime) -> None:
@@ -35,8 +33,7 @@ class Appointment:
     def create(
         self,
         patient_id: int,
-        doctor_slot: DoctorCalendarSlot,
-        base_slot: BaseCalendarSlot
+        
     ):
 
         if doctor_slot.status != SlotStatus.AVAILABLE:
@@ -59,3 +56,45 @@ class Appointment:
         )
 
         return appointment
+    
+    def update(): pass
+    
+    def delete(): pass
+    
+    
+    
+    
+    
+    @property
+    def id(self) -> int:
+        return self._id
+
+    @property
+    def patient_id(self) -> int:
+        return self._patient_id
+
+    @property
+    def doctor_id(self) -> int:
+        return self._doctor_id
+
+    @property
+    def room_id(self) -> int:
+        return self._room_id
+
+    @property
+    def doctor_slot_id(self) -> int:
+        return self._doctor_slot_id
+
+    @property
+    def base_slot_id(self) -> int:
+        return self._base_slot_id
+
+    @property
+    def starts_at(self) -> datetime:
+        return self._starts_at
+
+    @property
+    def ends_at(self) -> datetime:
+        return self._ends_at
+    
+    

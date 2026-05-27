@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter
 from src.modules.Agenda.Aplication.Service.AgendaService import AgendaService
-from src.Infra.RepoAdapter.AgendaRepository import AgendaRepository
+from src.Infra.RepoAdapter.commands.AgendaRepoSqlAlchemy import AgendaRepository
 from ...modules.Agenda.Domain.Entities.agendaEntity import (
     AgendaCreate,
     AgendaUpdate,

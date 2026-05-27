@@ -1,12 +1,7 @@
 from typing import Protocol
-from src.modules.Agenda.Domain.Entities.AgendaEntity import (
-    AgendaCreate,
-    AgendaEntity,
-    AgendaUpdate,
-)
 
 
-class AgendaRepository(Protocol):
+class IAgendaRepository(Protocol):
     def create(self, agenda: AgendaCreate) -> AgendaEntity: ...
     def list_all(self) -> list[AgendaEntity]: ...
     def get_by_id(self, agenda_id: int) -> AgendaEntity | None: ...
