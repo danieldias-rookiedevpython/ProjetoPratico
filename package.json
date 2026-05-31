@@ -1,0 +1,25 @@
+{
+  "name": "projetopratico",
+  "version": "1.0.0",
+  "description": "Projeto Prático que cria um sistema de agendamento médico com métodos e conceitos avançados em computação!!\r o projeto atualmente está sendo feito na **branch dev**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieldias-rookiedevpython/ProjetoPratico.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danieldias-rookiedevpython/ProjetoPratico/issues"
+  },
+  "homepage": "https://github.com/danieldias-rookiedevpython/ProjetoPratico#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "husky": "^9.1.7"
+  }
+}
