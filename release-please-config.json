@@ -1,0 +1,10 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "package-name": "agendaService",
+      "initial-version": "0.1.0"
+    }
+  },
+  "plugins": []
+}
