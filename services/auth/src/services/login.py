@@ -1,61 +1,84 @@
-import bcrypt
-from httpx import AsyncClient
 import httpx
-from .tokenJwt import TokenService 
-from bcrypt import check_password_hash
+
+from ..config import get_settings
+from .tokenJwt import TokenService
 
 
-
-userClient = AsyncClient(
-    timeout=5.0,
-    limits=httpx.Limits(
-        max_connections=1000,
-        max_keepalive_connections=100
-    ),
-    http2=True
-)
+def _bearer_token(token: str) -> str:
+    parts = token.split(" ", 1)
+    if len(parts) == 2 and parts[0].lower() == "bearer":
+        return parts[1].strip()
+    return token.strip()
 
 
+async def _fetch_user(email: str = "", name: str = "") -> dict | None:
+    settings = get_settings()
+    params = {}
+    if email:
+        params["email"] = email
+    if name:
+        params["name"] = name
 
-userClient.base_url = "http://user-service:3000/"
+    if not params:
+        return None
+
+    try:
+        async with httpx.AsyncClient(
+            base_url=settings.USER_SERVICE_URL,
+            timeout=settings.HTTP_TIMEOUT,
+        ) as client:
+            response = await client.get(settings.USER_LOOKUP_PATH, params=params)
+            if response.status_code == 404:
+                return None
+            response.raise_for_status()
+            data = response.json()
+    except httpx.HTTPError:
+        return None
+
+    if isinstance(data, list):
+        return data[0] if data else None
+    return data if isinstance(data, dict) else None
 
 
+def _dev_user(email: str = "", name: str = "") -> dict | None:
+    settings = get_settings()
+    if email and email != settings.AUTH_DEV_USER_EMAIL:
+        return None
+    if name and name != settings.AUTH_DEV_USER_NAME:
+        return None
 
-def loginService(password: str, email: str='', name: str=''):
+    return {
+        "id": settings.AUTH_DEV_USER_ID,
+        "email": settings.AUTH_DEV_USER_EMAIL,
+        "name": settings.AUTH_DEV_USER_NAME,
+        "password": settings.AUTH_DEV_USER_PASSWORD,
+        "role": settings.AUTH_DEV_USER_ROLE,
+    }
 
-   if(email==''  and name==''):
-       raise ValueError(" valores invalidos")
-   
-   if(email=='' and name!='' ):
-       user = userClient.get("/users/", params={"name": name})
-       if not user:
-            raise ValueError(" valores invalidos")
 
-   if(email!='' and name=='' and password!=''):
-        user = userClient.get("/users/", params={"email": email})
-        if not user:
-            raise ValueError(" valores invalidos")
-        
-   is_valid = validate_password(password, user.password)
-   if not is_valid:
-            return None
-        
-   token = TokenService.generate_token(user.id)
-   
-   if not token:
-            return None
+async def loginService(body: dict) -> dict | None:
+    password = body.get("password", "")
+    email = body.get("email", "")
+    name = body.get("name", "")
 
-   return {id:user.id, token: token}
-    
-  
-  
-  
-  
-  
-def validate_password(password: str, hashed_password: str) -> bool:
-    
-   check = bcrypt.checkpw((password).encode('utf-8'), hashed_password.strip())
-    
-   if check:
-        return True
-   return False
+    if not password or (not email and not name):
+        raise ValueError("email ou name e password sao obrigatorios")
+
+    user = await _fetch_user(email=email, name=name)
+    if not user:
+        user = _dev_user(email=email, name=name)
+
+    if not user or not validate_password(password, str(user.get("password", ""))):
+        return None
+
+    user_id = str(user.get("id"))
+    role = str(user.get("role") or user.get("cargo") or "user")
+    return {"user_id": user_id, "tokens": TokenService.generate_token(user_id, role)}
+
+
+async def validateLoginService(token: str) -> bool:
+    return TokenService.validate_token(_bearer_token(token))
+
+
+def validate_password(password: str, stored_password: str) -> bool:
+    return password == stored_password

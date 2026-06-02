@@ -1,100 +1,102 @@
-import datetime
-from ..ValueObjects.domainEvents import DomainEvents
-from src.Modules.Agenda.Domain.Entities.doctor import Doctor
-from src.Modules.Agenda.Domain.ValueObjects.enumAppoimentType import AppoimentType
-from src.Modules.Agenda.Domain.ValueObjects.id import ID
-from src.Modules.Agenda.Domain.ValueObjects.rangeTime import RangeTime
-from src.Modules.Agenda.Domain.ValueObjects.slotStatus import SlotStatus
+from src.modules.agenda.domain.entities.Day import Day
+from src.modules.agenda.domain.entities.Doctor import Doctor
+from src.modules.agenda.domain.entities.Patient import Patient
+from src.modules.agenda.domain.entities.Room import Room
+from src.modules.agenda.domain.valueObjects import Hour, RangeTime
+from src.modules.agenda.domain.valueObjects.EnumAppointment import AppointmentStatus
+from src.modules.agenda.domain.valueObjects.AppointmentType import  AppointmentType
+from src.modules.agenda.domain.valueObjects.Id import ID
+
+
 
 
 class Appointment:
-    
-    id: ID
-    room_id: int
-    patient_id: int
-    doctor_id: int
-    type: AppoimentType
-    time: RangeTime
-    _events: list[DomainEvents]
-    
+   
 
-    def __init__(self, id: int, patient_id: int, doctor_id: int, room_id: int, doctor_slot_id: int, base_slot_id: int, starts_at: datetime, ends_at: datetime) -> None:
-        self.id = id
-        self.patient_id = patient_id
-        self.doctor_id = doctor_id
-        self.room_id = room_id
-        self.doctor_slot_id = doctor_slot_id
-        self.base_slot_id = base_slot_id
-        self.starts_at = starts_at
-        self.ends_at = ends_at
-    
+    def __init__(
+        self,
+        rangeTime: RangeTime,
+        patient: str,
+        doctor: str,
+        room: str,
+        type: AppointmentType,
+        time: Hour,
+        status: AppointmentStatus,
+        id: ID | None = None
+    ) -> None:
+        self._patient_id = patient
+        self._doctor_id = doctor
+        self._room_id = room
+        self._type = type
+        self._time = time
+        self._status = status
+        self._id = id or ID()
+        self._rangeTime = rangeTime
+        
+      
     
     @staticmethod
     def create(
-        self,
-        patient_id: int,
-        
+        patient: Patient,
+        doctor: Doctor,
+        rooms: list[Room],
+        day: Day,
+        time: Hour,
+        type: AppointmentType,
     ):
+        
+        raw_time = str(time)
+        rangeTime = RangeTime.generate(raw_time, type.duration)
+        
+        if day.verifyInDisponibility(rangeTime) and doctor.verifyInDisponibility(rangeTime):
+            
+            roomSelected = None
+            for room in rooms:
+                if room.verifyInDisponibility(rangeTime):
+                    roomSelected = room
+            
+            if(roomSelected == None):
+                return None
+            
+            return Appointment(
+                id=ID(),
+                patient=str(patient.id),
+                doctor=str(doctor.id),
+                room=str(roomSelected.id),
+                time=Hour(raw_time),
+                type=type,
+                status= AppointmentStatus.AVAILABLE,
+                rangeTime=rangeTime
+            )
 
-        if doctor_slot.status != SlotStatus.AVAILABLE:
-            raise Exception("Doctor slot unavailable")
+        return None
+       
+    
+    
+    
+    
+    def verifyOverleaps(self, time):
+        return self._rangeTime.overlaps(time)
 
-        if base_slot.status != SlotStatus.AVAILABLE:
-            raise Exception("Room unavailable")
+    def update(self, data):
+        if hasattr(data, "time"):
+            self._time = Hour(data.time)
+        return self
 
-        doctor_slot.status = SlotStatus.BOOKED
-        base_slot.status = SlotStatus.BOOKED
-
-        appointment = Appointment(
-            patient_id=patient_id,
-            doctor_id=doctor_slot.doctor_id,
-            room_id=base_slot.room_id,
-            doctor_slot_id=doctor_slot.id,
-            base_slot_id=base_slot.id,
-            starts_at=doctor_slot.starts_at,
-            ends_at=doctor_slot.ends_at
-        )
-
-        return appointment
-    
-    def update(): pass
-    
-    def delete(): pass
-    
-    
-    
-    
-    
     @property
-    def id(self) -> int:
+    def id(self) -> ID:
         return self._id
 
     @property
-    def patient_id(self) -> int:
-        return self._patient_id
+    def rangeTime(self) -> RangeTime:
+        return self._rangeTime
 
     @property
-    def doctor_id(self) -> int:
-        return self._doctor_id
+    def time(self) -> Hour:
+        return self._time
 
     @property
-    def room_id(self) -> int:
-        return self._room_id
-
-    @property
-    def doctor_slot_id(self) -> int:
-        return self._doctor_slot_id
-
-    @property
-    def base_slot_id(self) -> int:
-        return self._base_slot_id
-
-    @property
-    def starts_at(self) -> datetime:
-        return self._starts_at
-
-    @property
-    def ends_at(self) -> datetime:
-        return self._ends_at
+    def status(self) -> AppointmentStatus:
+        return self._status
     
     

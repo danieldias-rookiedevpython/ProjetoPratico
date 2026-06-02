@@ -1,89 +1,49 @@
-from ..Interfaces.UseCasesUserInterface import IUseCasesCreateUser, IUseCasesDetailUser, IUseCasesListUser, IUseCasesDeleteUser, IUseCasesUpdateUser
-from fastapi import APIRouter, Depends
-from ..provider import UserFactory
+from fastapi import APIRouter, Depends, Response, status
+
+from services.usersService.src.api.ApiSchemas import ErrorResponse, UserCreateRequest, UserResponse, UserUpdateRequest
+from services.usersService.src.api.ControllerUtils import dto_to_response, handle_domain_exception
+from services.usersService.src.api.Provider import UserFactory
 
 
+routerMedics = APIRouter(prefix="/medics", tags=["medics"])
+routerUsers = routerMedics
 
 
-routerUsers = APIRouter(
-    prefix="/user", 
-    tags=["uaser"],
-    #dependencies= Depends(hookFunction)
-)
+@routerMedics.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED, responses={409: {"model": ErrorResponse}})
+def create_medic(data: UserCreateRequest, use_case=Depends(UserFactory.create_medic_use_case)):
+    try:
+        return dto_to_response(use_case.execute(data))
+    except Exception as exc:
+        handle_domain_exception(exc)
 
 
-@routerUsers.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-
-def create_User(self, name: str,  useCase: IUseCasesCreateUser = Depends(UserFactory.useCaseCreateUser_factory)):
-        return useCase.execute(name)
-    
+@routerMedics.get("/", response_model=list[UserResponse])
+def list_medics(use_case=Depends(UserFactory.list_medic_use_case)):
+    return [dto_to_response(item) for item in use_case.execute()]
 
 
-
-@routerUsers.put(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-def update_User(self, name: str,  useCase: IUseCasesUpdateUser = Depends(UserFactory.useCaseUpdateUser_factory)):
-        return useCase.execute(name)
-    
-    
-    
+@routerMedics.get("/{user_id}", response_model=UserResponse, responses={404: {"model": ErrorResponse}})
+def detail_medic(user_id: int, use_case=Depends(UserFactory.detail_medic_use_case)):
+    try:
+        return dto_to_response(use_case.execute(user_id))
+    except Exception as exc:
+        handle_domain_exception(exc)
 
 
-
-@routerUsers.delete(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-def delete_User(self, name: str,  useCase: IUseCasesDeleteUser = Depends(UserFactory.useCaseDeleteUser_factory)):
-        return useCase.execute(name)
-    
-
-
-
-@routerUsers.get(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-def list_User(self, name: str,  useCase: IUseCasesListUser = Depends(UserFactory.useCaseListUser_factory)):
-            return useCase.execute(name)
-    
+@routerMedics.put("/{user_id}", response_model=UserResponse, responses={404: {"model": ErrorResponse}})
+def update_medic(user_id: int, data: UserUpdateRequest, use_case=Depends(UserFactory.update_medic_use_case)):
+    try:
+        payload = data.model_dump(exclude_unset=True)
+        payload["id"] = user_id
+        return dto_to_response(use_case.execute(payload))
+    except Exception as exc:
+        handle_domain_exception(exc)
 
 
-@routerUsers.get(
-        "/{userId}",
-        #dependencies= Depends(hookFunction)
-    )
-def detail_User(self, name: str,  useCase: IUseCasesDetailUser = Depends(UserFactory.useCaseDetailUser_factory)):
-            return useCase.execute(name)
-    
-
-@routerUsers.post(
-        "/",
-        #dependencies= Depends(hookFunction)
-    )
-
-def get_user_by_email_or_userName(value: str, useCase: IUseCasesDetailUser = Depends(UserFactory.useCaseAuthUser_factory)):
-
-    useCase.execute(value)
-'''
- retur to {
-     "id": 1,
-     "name": "string",
-     "password": "string",
-     "uerName": "string",
-     "role": "string",
-     "cargo": "string"
- }
-'''
-
-
-
-
-    #admin metodes
-
-    #super admin metodes
+@routerMedics.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT, responses={404: {"model": ErrorResponse}})
+def delete_medic(user_id: int, use_case=Depends(UserFactory.delete_medic_use_case)):
+    try:
+        use_case.execute(user_id)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except Exception as exc:
+        handle_domain_exception(exc)

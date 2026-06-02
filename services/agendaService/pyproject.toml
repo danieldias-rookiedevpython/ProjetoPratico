@@ -11,11 +11,12 @@ requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi (>=0.135.1,<0.136.0)",
     "uvicorn[standard] (>=0.41.0,<0.42.0)",
-    "fastapi-restful (>=0.6.0,<0.7.0)",
     "pytest (>=9.0.2,<10.0.0)",
     "psycopg2 (>=2.9.11,<3.0.0)",
     "testcontainers (>=4.14.2,<5.0.0)",
-    "aiokafka (>=0.14.0,<0.15.0)",
+    "aio-pika (>=9.6.2,<10.0.0)",
+    "redis (>=7.4.0,<8.0.0)",
+    "ddtrace (>=4.0.0,<5.0.0)",
 ]
 
 [dependency-groups]
@@ -27,7 +28,9 @@ dev = [
 
 [tool.poetry]
 name = "agenda"
-packages = [{include ="src"}]
+packages = [
+  { include = "modules", from = "src" }
+]
 
 
 [build-system]
@@ -43,3 +46,11 @@ start = "src.API.server:main"
 start2 = "uvicorn src.API.server:app --reload"
 check = "mypy ."
 test = "pytest"
+
+
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
+explicit_package_bases = true
+namespace_packages = true

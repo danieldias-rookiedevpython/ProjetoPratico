@@ -1,16 +1,23 @@
 import re
 
+from ..exceptions.DomainExceptions import InvalidEmailException
+
+
 class Email:
     EMAIL_REGEX = r"^[\w\.-]+@[\w\.-]+\.\w+$"
 
-    def __init__(self, valor: str):
-        valor = valor.strip()
-        if not re.match(self.EMAIL_REGEX, valor):
-            raise ValueError(f"Email inválido: {valor}")
-        self.valor = valor
+    def __init__(self, value: str):
+        value = (value or "").strip().lower()
+        if not re.match(self.EMAIL_REGEX, value):
+            raise InvalidEmailException(value)
+        self.value = value
 
-    def __str__(self):
-        return self.valor
+    @property
+    def valor(self) -> str:
+        return self.value
 
-    def __repr__(self):
-        return f"Email('{self.valor}')"
+    def __str__(self) -> str:
+        return self.value
+
+    def __repr__(self) -> str:
+        return f"Email('{self.value}')"

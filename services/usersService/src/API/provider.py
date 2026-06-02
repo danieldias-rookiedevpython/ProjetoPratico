@@ -1,68 +1,130 @@
+from services.usersService.src.infra.adapters.EventBus import InMemoryEventBus
+from services.usersService.src.infra.adapters.RoleScopedUserRepository import RoleScopedUserRepository
+from services.usersService.src.modules.pacients.application.useCases.CreateUseCase import CreatePacientUseCase
+from services.usersService.src.modules.pacients.application.useCases.DeleteUseCase import DeletePacientUseCase
+from services.usersService.src.modules.pacients.application.useCases.DetailUseCase import DetailPacientUseCase
+from services.usersService.src.modules.pacients.application.useCases.ListUseCase import ListPacientUseCase
+from services.usersService.src.modules.pacients.application.useCases.UpdateUseCase import UpdatePacientUseCase
+from services.usersService.src.modules.users.application.useCases.commands.admin.CreateUseCase import CreateAdminUseCase
+from services.usersService.src.modules.users.application.useCases.commands.admin.DeleteUseCase import DeleteAdminUseCase
+from services.usersService.src.modules.users.application.useCases.commands.admin.UpdateUseCase import UpdateAdminUseCase
+from services.usersService.src.modules.users.application.useCases.commands.atendent.CreateUseCase import CreateAtendentUseCase
+from services.usersService.src.modules.users.application.useCases.commands.atendent.DeleteUseCase import DeleteAtendentUseCase
+from services.usersService.src.modules.users.application.useCases.commands.atendent.UpdateUseCase import UpdateAtendentUseCase
+from services.usersService.src.modules.users.application.useCases.commands.medic.CreateUseCase import CreateMedicUseCase
+from services.usersService.src.modules.users.application.useCases.commands.medic.DeleteUseCase import DeleteMedicUseCase
+from services.usersService.src.modules.users.application.useCases.commands.medic.UpdateUseCase import UpdateMedicUseCase
+from services.usersService.src.modules.users.application.useCases.querys.admin.DetailUseCase import DetailAdminUseCase
+from services.usersService.src.modules.users.application.useCases.querys.admin.ListUseCase import ListAdminUseCase
+from services.usersService.src.modules.users.application.useCases.querys.atendent.DetailUseCase import DetailAtendentUseCase
+from services.usersService.src.modules.users.application.useCases.querys.atendent.ListUseCase import ListAtendentUseCase
+from services.usersService.src.modules.users.application.useCases.querys.medic.DetailUseCase import DetailMedicUseCase
+from services.usersService.src.modules.users.application.useCases.querys.medic.ListUseCase import ListMedicUseCase
 
-from ..Modules.User.Aplication.UseCases import createUseCase, deleteUseCase, detailUseCase, listUseCase, updateUseCase
-from ..Infra.RepoAdapter.UserRepositorySqlAlchemy import UserRepository
 
-#uma formM
-'''
-def get_repository_factory():
-    # Aqui você pode criar e configurar a instância do seu repositório
-    # Por exemplo, se você tiver uma implementação concreta do repositório:
-    from ...Infrastructure.Repositories import AgendaRepository
-    return AgendaRepository()
-
-
-def get_usecase_factory():
-    # Aqui você pode criar e configurar a instância do seu use case
-    # Por exemplo, se você tiver uma implementação concreta do UseCasesAgendaInterface:
-    from ...Aplication.UseCases import UseCasesAgenda
-    return UseCasesAgenda(get_repository_factory())
-
-
-def get_controller_factory():
-    return AgendaController(get_usecase_factory())
-
-'''
-
-#forma 2
-'''
-def router_factory():
-    repository = AgendaRepository()
-    usecase = UseCasesAgenda(repository)
-    controller = AgendaController(usecase)
-    return AgendaRouter(controller).router
-
-'''
-
-#atual
 class UserFactory:
-    def useCaseCreateUser_factory():
-        repository = UserRepository()
-        usecase = createUseCase.CreateUserUseCase(repository)
-        return usecase
-    
+    @staticmethod
+    def event_bus_factory():
+        return InMemoryEventBus()
 
-    def useCaseDeleteUser_factory():
-        repository = UserRepository()
-        usecase = deleteUseCase.DeleteUserUseCase(repository)
-        return usecase
+    @staticmethod
+    def medic_repository_factory():
+        return RoleScopedUserRepository("MEDICO")
 
+    @staticmethod
+    def atendent_repository_factory():
+        return RoleScopedUserRepository("ATENDENTE")
 
-    def useCaseUpdateUser_factory():
-        repository = UserRepository()
-        usecase = updateUseCase.UpdateUserUseCase(repository)
-        return usecase
+    @staticmethod
+    def admin_repository_factory():
+        return RoleScopedUserRepository("ADMIN")
 
+    @staticmethod
+    def pacient_repository_factory():
+        return RoleScopedUserRepository("PACIENTE")
 
-    def useCaseListUser_factory():
-        repository = UserRepository()
-        usecase = listUseCase.ListUserUseCase(repository)
-        return usecase
+    @staticmethod
+    def create_medic_use_case():
+        return CreateMedicUseCase(UserFactory.medic_repository_factory(), UserFactory.event_bus_factory())
 
+    @staticmethod
+    def update_medic_use_case():
+        return UpdateMedicUseCase(UserFactory.medic_repository_factory(), UserFactory.event_bus_factory())
 
-    def useCaseDetailUser_factory():
-        repository = UserRepository()
-        usecase = detailUseCase.DetailUserUseCase(repository)
-        return usecase
+    @staticmethod
+    def delete_medic_use_case():
+        return DeleteMedicUseCase(UserFactory.medic_repository_factory(), UserFactory.event_bus_factory())
 
+    @staticmethod
+    def list_medic_use_case():
+        return ListMedicUseCase(UserFactory.medic_repository_factory())
 
+    @staticmethod
+    def detail_medic_use_case():
+        return DetailMedicUseCase(UserFactory.medic_repository_factory())
 
+    @staticmethod
+    def create_atendent_use_case():
+        return CreateAtendentUseCase(UserFactory.atendent_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def update_atendent_use_case():
+        return UpdateAtendentUseCase(UserFactory.atendent_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def delete_atendent_use_case():
+        return DeleteAtendentUseCase(UserFactory.atendent_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def list_atendent_use_case():
+        return ListAtendentUseCase(UserFactory.atendent_repository_factory())
+
+    @staticmethod
+    def detail_atendent_use_case():
+        return DetailAtendentUseCase(UserFactory.atendent_repository_factory())
+
+    @staticmethod
+    def create_admin_use_case():
+        return CreateAdminUseCase(UserFactory.admin_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def update_admin_use_case():
+        return UpdateAdminUseCase(UserFactory.admin_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def delete_admin_use_case():
+        return DeleteAdminUseCase(UserFactory.admin_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def list_admin_use_case():
+        return ListAdminUseCase(UserFactory.admin_repository_factory())
+
+    @staticmethod
+    def detail_admin_use_case():
+        return DetailAdminUseCase(UserFactory.admin_repository_factory())
+
+    @staticmethod
+    def create_pacient_use_case():
+        return CreatePacientUseCase(UserFactory.pacient_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def update_pacient_use_case():
+        return UpdatePacientUseCase(UserFactory.pacient_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def delete_pacient_use_case():
+        return DeletePacientUseCase(UserFactory.pacient_repository_factory(), UserFactory.event_bus_factory())
+
+    @staticmethod
+    def list_pacient_use_case():
+        return ListPacientUseCase(UserFactory.pacient_repository_factory())
+
+    @staticmethod
+    def detail_pacient_use_case():
+        return DetailPacientUseCase(UserFactory.pacient_repository_factory())
+
+    useCaseCreateUser_factory = create_medic_use_case
+    useCaseDeleteUser_factory = delete_medic_use_case
+    useCaseUpdateUser_factory = update_medic_use_case
+    useCaseListUser_factory = list_medic_use_case
+    useCaseDetailUser_factory = detail_medic_use_case

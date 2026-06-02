@@ -1,22 +1,33 @@
 from enum import Enum
 
-class CargoEnum(Enum):
+from ..exceptions.DomainExceptions import InvalidCargoException
+
+
+class CargoEnum(str, Enum):
+    ADMIN = "ADMIN"
     MEDICO = "MEDICO"
     ATENDENTE = "ATENDENTE"
     GERENTE = "GERENTE"
     SUPERVISOR = "SUPERVISOR"
-    PACIENTE = "PACIENTE"  # default
+    PACIENTE = "PACIENTE"
+
 
 class Cargo:
-    def __init__(self, valor: str|None):
-       if (valor==None): 
-           self.valor=None
-       else:
-           if(valor in CargoEnum):
-             self.valor = valor
+    def __init__(self, value: str | CargoEnum | None):
+        if value is None:
+            self.value = None
+            return
+        try:
+            self.value = value if isinstance(value, CargoEnum) else CargoEnum(str(value).upper())
+        except ValueError as exc:
+            raise InvalidCargoException(str(value)) from exc
 
-    def __str__(self):
-        return self.valor.value
+    @property
+    def valor(self) -> str | None:
+        return self.value.value if self.value else None
 
-    def __repr__(self):
-        return f"CargoVO({self.valor})"
+    def __str__(self) -> str:
+        return self.valor or ""
+
+    def __repr__(self) -> str:
+        return f"Cargo('{self.valor}')"

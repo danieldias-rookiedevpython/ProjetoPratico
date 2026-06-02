@@ -1,55 +1,41 @@
-version: "3.9"
-
 services:
-  usersService:
-    build: ./usersService
+  auth-service:
+    build:
+      context: .
+    env_file:
+      - path: ../../.env
+        required: false
+      - path: ./.env
+        required: false
+    environment:
+      AUTH_PORT: ${AUTH_PORT:-8000}
+      USER_SERVICE_URL: ${USER_SERVICE_URL:-http://users-service:8000}
+      OPENFGA_ENABLED: ${OPENFGA_ENABLED:-true}
+      OPENFGA_API_URL: ${OPENFGA_API_URL:-http://openfga:8080}
+      OPENFGA_STORE_NAME: ${OPENFGA_STORE_NAME:-agendamento-medico}
+      OPENFGA_AUTHZ_FAIL_OPEN: ${OPENFGA_AUTHZ_FAIL_OPEN:-false}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.usersService.rule=Host(manageUsers.example.com) && PathPrefix(/users)"
-      - "traefik.http.services.usersService.loadbalancer.server.port=3001"
+      - "traefik.http.routers.auth-service.rule=PathPrefix(`/auth`)"
+      - "traefik.http.routers.auth-service.entrypoints=web"
+      - "traefik.http.services.auth-service.loadbalancer.server.port=8000"
+      - "traefik.http.routers.auth-health.rule=Path(`/auth/health`)"
+      - "traefik.http.routers.auth-health.entrypoints=web"
+      - "traefik.http.routers.auth-health.middlewares=auth-health-strip"
+      - "traefik.http.routers.auth-health.priority=100"
+      - "traefik.http.routers.auth-health.service=auth-service"
+      - "traefik.http.middlewares.auth-health-strip.stripprefix.prefixes=/auth"
       - "traefik.docker.network=web"
-
-      # 🔐 ROUTER PADRÃO (COM AUTH)
-      - "traefik.http.routers.app-secure.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.app-secure.middlewares=auth"
-
-      # 🌐 ROUTER PÚBLICO (SEM AUTH)
-      - "traefik.http.routers.app-public.rule=Host(manageUsers.example.com) && Path(`/login`) || Path(`/create`)"
-      - "traefik.http.routers.app-public.entrypoints=web"
-
-      # 🔥 PRIORIDADE (ESSENCIAL)
-      - "traefik.http.routers.app-public.priority=100"
-
-
-
     ports:
-      - "3000:3000"
+      - "${AUTH_PORT:-8000}:8000"
+    depends_on:
+      openfga-init:
+        condition: service_completed_successfully
     networks:
       - web
-      - userNet
-
-
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - userNet
-
-
-
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: usersdb
-    ports:
-      - "5432:5432"
-    networks:
-      - userNet
-
+      - auth-net
 
 networks:
-  userNet:
-    internal: true
+  web:
+    name: web
+  auth-net:

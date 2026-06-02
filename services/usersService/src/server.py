@@ -1,30 +1,22 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from services.usersService.src.API.Controllers.MedicController import routerUsers
+
+from services.usersService.src.api.controllers import routerAdmins, routerAtendents, routerMedics, routerPacients
 
 
-app = FastAPI()
+app = FastAPI(title="Users Service")
 
-#middleware global aki
-'''
-@app.middleware("http")
-async def add_process_time_header(request, call_next):
-    
-   
-    print("ANTES DA ROTA")
-
-    response = await call_next(request)
-
-    print("DEPOIS DA ROTA")
-
-    return response
-'''
+app.include_router(routerAdmins)
+app.include_router(routerAtendents)
+app.include_router(routerMedics)
+app.include_router(routerPacients)
 
 
-app.include_router(routerUsers)
-
+@app.get("/health", tags=["health"])
+def health_check():
+    return {"status": "ok"}
 
 
 def main():
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=3004)

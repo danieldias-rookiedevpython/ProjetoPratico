@@ -1,0 +1,116 @@
+{
+  "writes": {
+    "tuple_keys": [
+      {
+        "user": "role:admin#member",
+        "relation": "admin",
+        "object": "service:users"
+      },
+      {
+        "user": "role:admin#member",
+        "relation": "admin",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:admin#member",
+        "relation": "admin",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:admin#member",
+        "relation": "admin",
+        "object": "service:analytics"
+      },
+      {
+        "user": "role:atendent#member",
+        "relation": "writer",
+        "object": "service:users"
+      },
+      {
+        "user": "role:attendant#member",
+        "relation": "writer",
+        "object": "service:users"
+      },
+      {
+        "user": "role:atendent#member",
+        "relation": "writer",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:attendant#member",
+        "relation": "writer",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:atendent#member",
+        "relation": "writer",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:attendant#member",
+        "relation": "writer",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:medic#member",
+        "relation": "writer",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:doctor#member",
+        "relation": "writer",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:medic#member",
+        "relation": "reader",
+        "object": "service:analytics"
+      },
+      {
+        "user": "role:doctor#member",
+        "relation": "reader",
+        "object": "service:analytics"
+      },
+      {
+        "user": "role:medic#member",
+        "relation": "writer",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:doctor#member",
+        "relation": "writer",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:pacient#member",
+        "relation": "writer",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:patient#member",
+        "relation": "writer",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:pacient#member",
+        "relation": "writer",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:patient#member",
+        "relation": "writer",
+        "object": "service:notification"
+      },
+      {
+        "user": "role:user#member",
+        "relation": "reader",
+        "object": "service:agenda"
+      },
+      {
+        "user": "role:user#member",
+        "relation": "reader",
+        "object": "service:notification"
+      }
+    ]
+  }
+}

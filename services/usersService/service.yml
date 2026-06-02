@@ -1,55 +1,57 @@
-version: "3.9"
-
 services:
-  usersService:
-    build: ./usersService
+  users-service:
+    build:
+      context: .
+    env_file:
+      - path: ../../.env
+        required: false
+      - path: ./.env
+        required: false
+    environment:
+      USERS_DATABASE_URL: ${USERS_DATABASE_URL:-postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@users-postgres:5432/${USERS_POSTGRES_DB:-usersdb}}
+      REDIS_URL: ${REDIS_URL:-redis://users-redis:6379/0}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.usersService.rule=Host(manageUsers.example.com) && PathPrefix(/users)"
-      - "traefik.http.services.usersService.loadbalancer.server.port=3001"
+      - "traefik.http.routers.users-service.rule=PathPrefix(`/users`)"
+      - "traefik.http.routers.users-service.entrypoints=web"
+      - "traefik.http.routers.users-service.middlewares=auth@file,users-strip"
+      - "traefik.http.middlewares.users-strip.stripprefix.prefixes=/users"
+      - "traefik.http.services.users-service.loadbalancer.server.port=8000"
       - "traefik.docker.network=web"
-
-      # 🔐 ROUTER PADRÃO (COM AUTH)
-      - "traefik.http.routers.app-secure.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.app-secure.middlewares=auth"
-
-      # 🌐 ROUTER PÚBLICO (SEM AUTH)
-      - "traefik.http.routers.app-public.rule=Host(manageUsers.example.com) && Path(`/login`) || Path(`/create`)"
-      - "traefik.http.routers.app-public.entrypoints=web"
-
-      # 🔥 PRIORIDADE (ESSENCIAL)
-      - "traefik.http.routers.app-public.priority=100"
-
-
-
     ports:
-      - "3000:3000"
+      - "${USERS_PORT:-8002}:8000"
+    depends_on:
+      - users-postgres
+      - users-redis
     networks:
       - web
-      - userNet
+      - users-net
 
-
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
+  users-redis:
+    image: redis:7
     networks:
-      - userNet
+      - users-net
 
-
-
-  postgres:
-    image: postgres:latest
+  users-postgres:
+    image: postgres:17
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: usersdb
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${USERS_POSTGRES_DB:-usersdb}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - users-postgres-data:/var/lib/postgresql/data
     networks:
-      - userNet
-
+      - users-net
 
 networks:
-  userNet:
-    internal: true
+  web:
+    name: web
+  users-net:
+
+volumes:
+  users-postgres-data:

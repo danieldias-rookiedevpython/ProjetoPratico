@@ -1,14 +1,19 @@
+from ..exceptions.DomainExceptions import InvalidNameException
+
+
 class Nome:
-    def __init__(self, valor: str):
-        valor = valor.strip()
-        if not valor:
-            raise ValueError("O nome não pode ser vazio")
-        if len(valor) < 2:
-            raise ValueError("O nome deve ter pelo menos 2 caracteres")
-        self.valor = valor
+    def __init__(self, value: str):
+        value = (value or "").strip()
+        if len(value) < 2:
+            raise InvalidNameException("nome deve ter pelo menos 2 caracteres")
+        self.value = value
 
-    def __str__(self):
-        return self.valor
+    @property
+    def valor(self) -> str:
+        return self.value
 
-    def __repr__(self):
-        return f"Nome('{self.valor}')"
+    def __str__(self) -> str:
+        return self.value
+
+    def __repr__(self) -> str:
+        return f"Nome('{self.value}')"

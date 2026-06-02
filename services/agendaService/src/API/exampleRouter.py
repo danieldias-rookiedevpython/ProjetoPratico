@@ -1,7 +1,3 @@
-from site import getuserbase
-from fastapi import APIRouter, Depends
-from src.Agenda.API.Controllers.AgendaController import AgendaController, get_controller_factory
-import asyncio
 
 
 

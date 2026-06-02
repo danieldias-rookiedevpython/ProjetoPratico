@@ -1,50 +1,50 @@
+import hashlib
 import re
-import bcrypt  # pip install bcrypt
+
+from ..exceptions.DomainExceptions import InvalidPasswordException
+
 
 class Password:
-    def __init__(self, valor: str, hashed: bool = False):
-        """
-        valor: senha em texto puro ou já hash
-        hashed: se True, assume que 'valor' já é hash e não precisa validar
-        """
+    def __init__(self, value: str | None, hashed: bool = False):
+        if value is None:
+            self.value = None
+            return
         if hashed:
-            self._hash = valor
-        else:
-            valor = valor.strip()
-            if len(valor) < 8:
-                raise ValueError("Senha deve ter pelo menos 8 caracteres")
-            if len(valor) > 128:
-                raise ValueError("Senha deve ter no máximo 128 caracteres")
-            if not re.search(r"[A-Z]", valor):
-                raise ValueError("Senha deve conter ao menos uma letra maiúscula")
-            if not re.search(r"[a-z]", valor):
-                raise ValueError("Senha deve conter ao menos uma letra minúscula")
-            if not re.search(r"[0-9]", valor):
-                raise ValueError("Senha deve conter ao menos um número")
-            if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", valor):
-                raise ValueError("Senha deve conter ao menos um caractere especial")
+            self.value = value
+            return
 
-            self._hash = self._hash_password(valor)
+        value = value.strip()
+        if len(value) < 8:
+            raise InvalidPasswordException("senha deve ter pelo menos 8 caracteres")
+        if len(value) > 128:
+            raise InvalidPasswordException("senha deve ter no maximo 128 caracteres")
+        if not re.search(r"[A-Z]", value):
+            raise InvalidPasswordException("senha deve conter uma letra maiuscula")
+        if not re.search(r"[a-z]", value):
+            raise InvalidPasswordException("senha deve conter uma letra minuscula")
+        if not re.search(r"[0-9]", value):
+            raise InvalidPasswordException("senha deve conter um numero")
+        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", value):
+            raise InvalidPasswordException("senha deve conter um caractere especial")
+        self.value = self._hash_password(value)
 
     @staticmethod
-    def _hash_password(valor: str) -> str:
-        return bcrypt.hashpw(valor.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
-
-    def verify(self, valor: str) -> bool:
-        """Verifica se o valor bate com o hash"""
-        return bcrypt.checkpw(valor.encode("utf-8"), self._hash.encode("utf-8"))
-    
-    def compare(self, other: 'Password') -> bool:
-        """Compara se dois objetos Password têm o mesmo hash"""
-        return self._hash == other._hash
+    def _hash_password(value: str) -> str:
+        return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
     @property
-    def hash(self) -> str:
-        """Retorna o hash da senha para salvar no banco"""
-        return self._hash
+    def hash(self) -> str | None:
+        return self.value
 
-    def __str__(self):
-        return "********"  # nunca mostra a senha real
+    @property
+    def valor(self) -> str | None:
+        return self.value
 
-    def __repr__(self):
-        return f"Password('********')"
+    def verify(self, value: str) -> bool:
+        return self.value == self._hash_password(value)
+
+    def __str__(self) -> str:
+        return "********"
+
+    def __repr__(self) -> str:
+        return "Password('********')"

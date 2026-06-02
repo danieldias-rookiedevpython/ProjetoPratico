@@ -1,12 +1,13 @@
-version: "3.9"
+name: agendamento-medico
+
 include:
   - services/agendaService/service.yml
   - services/auth/service.yml
   - services/notificationService/service.yml
   - services/usersService/service.yml
+  - services/analyticService/service.yml
 
 services:
-
   traefik:
     image: traefik:v3.0
     command:
@@ -15,45 +16,113 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      #- --entrypoints.websecure.http.tls.certresolver=myresolver
-
     ports:
       - "80:80"
-      - "8080:8080" 
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik.yml:/etc/traefik/traefik.yml:ro
-      #- /path/to/acme.json:/acme.json:rw
-
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
     networks:
       - web
 
-
-
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: "true"
+  rabbitmq:
+    image: rabbitmq:3.9.16-management
     ports:
-      - "2181:2181"
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - web
 
-  kafka:
-    image: bitnami/kafka:latest
+  datadog:
+    image: datadog/agent:latest
+    profiles:
+      - observability
+    env_file:
+      - path: ./.env
+        required: false
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      DD_API_KEY: ${DD_API_KEY:-}
+      DD_SITE: ${DD_SITE:-datadoghq.com}
+      DD_APM_ENABLED: ${DD_APM_ENABLED:-true}
+      DD_APM_NON_LOCAL_TRAFFIC: ${DD_APM_NON_LOCAL_TRAFFIC:-true}
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: ${DD_DOGSTATSD_NON_LOCAL_TRAFFIC:-true}
+      DD_LOGS_ENABLED: ${DD_LOGS_ENABLED:-true}
+      DD_CONTAINER_EXCLUDE_LOGS: ${DD_CONTAINER_EXCLUDE_LOGS:-name:datadog}
     ports:
-      - "9092:9092"
+      - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - web
 
+  openfga-postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${OPENFGA_POSTGRES_DB:-openfga}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - openfga-postgres-data:/var/lib/postgresql/data
+    networks:
+      - openfga-net
+
+  openfga-migrate:
+    image: openfga/openfga:1
+    command: migrate
+    depends_on:
+      openfga-postgres:
+        condition: service_healthy
+    environment:
+      OPENFGA_DATASTORE_ENGINE: postgres
+      OPENFGA_DATASTORE_URI: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@openfga-postgres:5432/${OPENFGA_POSTGRES_DB:-openfga}?sslmode=disable
+    networks:
+      - openfga-net
+
+  openfga:
+    image: openfga/openfga:1
+    command: run
+    depends_on:
+      openfga-migrate:
+        condition: service_completed_successfully
+    environment:
+      OPENFGA_DATASTORE_ENGINE: postgres
+      OPENFGA_DATASTORE_URI: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@openfga-postgres:5432/${OPENFGA_POSTGRES_DB:-openfga}?sslmode=disable
+      OPENFGA_LOG_FORMAT: json
+    ports:
+      - "8090:8080"
+      - "8081:8081"
+      - "3000:3000"
+    networks:
+      - web
+      - openfga-net
+
+  openfga-init:
+    image: python:3.12-alpine
+    command: ["python", "/openfga/bootstrap.py"]
+    depends_on:
+      openfga:
+        condition: service_started
+    environment:
+      OPENFGA_API_URL: ${OPENFGA_API_URL:-http://openfga:8080}
+      OPENFGA_STORE_NAME: ${OPENFGA_STORE_NAME:-agendamento-medico}
+      OPENFGA_MODEL_PATH: /openfga/authorization-model.json
+      OPENFGA_TUPLES_PATH: /openfga/tuples.json
+    volumes:
+      - ./openfga:/openfga:ro
+    networks:
+      - web
+      - openfga-net
 
 networks:
-  default:
-    external:
-      name: web
+  web:
+    name: web
+  openfga-net:
+
+volumes:
+  openfga-postgres-data:

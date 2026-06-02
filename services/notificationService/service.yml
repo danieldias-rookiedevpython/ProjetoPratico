@@ -1,0 +1,27 @@
+services:
+  notificacao-service:
+    build:
+      context: .
+    env_file:
+      - path: ../../.env
+        required: false
+      - path: ./.env
+        required: false
+    environment:
+      RABBITMQ_URL: ${RABBITMQ_URL:-amqp://guest:guest@rabbitmq:5672/}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.notificacao-service.rule=PathPrefix(`/notification`)"
+      - "traefik.http.routers.notificacao-service.entrypoints=web"
+      - "traefik.http.routers.notificacao-service.middlewares=auth@file,notification-strip"
+      - "traefik.http.middlewares.notification-strip.stripprefix.prefixes=/notification"
+      - "traefik.http.services.notificacao-service.loadbalancer.server.port=8000"
+      - "traefik.docker.network=web"
+    ports:
+      - "${NOTIFICACAO_PORT:-8003}:8000"
+    networks:
+      - web
+
+networks:
+  web:
+    name: web

@@ -1,26 +1,16 @@
-# infra/websocket/router.py
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 
-from fastapi import APIRouter
-from fastapi import WebSocket
-from fastapi import WebSocketDisconnect
-
-from src.Infra.Messaging.webSockets.container  import connection_manager
+from src.api.provider import get_connection_manager
 
 
-router = APIRouter()
+router = APIRouter(tags=["Websocket"])
 
 
 @router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-
-    await connection_manager.connect(websocket)
-
+async def websocket_endpoint(websocket: WebSocket, manager=Depends(get_connection_manager)):
+    await manager.connect(websocket)
     try:
-
         while True:
-
             await websocket.receive_text()
-
     except WebSocketDisconnect:
-
-        connection_manager.disconnect(websocket)
+        manager.disconnect(websocket)

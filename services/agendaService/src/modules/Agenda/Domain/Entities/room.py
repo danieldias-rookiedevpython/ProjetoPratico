@@ -1,62 +1,62 @@
-from src.Modules.Agenda.Domain.Policies.Clinic.baseRuleClinic import BaseRuleClinic
-from src.Modules.Agenda.Domain.Policies.Room.baseRuleRoom import BaseRuleRoom
-from src.Modules.Agenda.Domain.ValueObjects.id import ID
-from src.Modules.Agenda.Domain.ValueObjects.rangeTime import RangeTime
-from ..services.engineAvailability import engine_availability_room
-from ..ValueObjects.domainEvents import DomainEvents
+from typing import Any
+from src.modules.agenda.domain.rules.BaseRule import BaseRule
+from src.modules.agenda.domain.services import VerifyInRange
+from src.modules.agenda.domain.valueObjects.Id import ID
+from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+
 
 
 class Room:
-    id: ID
-    name: str
-    availability: bool
-    rules: list[BaseRuleRoom]
-    rulesClinic: list[BaseRuleClinic]
-    # o timeOcupped e uma matriz relacionando dia e horarios ocupados
-    timeOcupped: list[int][RangeTime]
-    hoursDisponibility: list[int][RangeTime]
-    appointmentList_id: list[int][str]
-    _events: list[DomainEvents]
-    
-    def __init__(self, name: str, disponibility: bool, rules: list[BaseRuleRoom]):
+
+    def __init__(self, name: str, rules: list[BaseRule] | None = None, disponibility: bool = True, id: str | None = None):
         self.name = name
-        self.disponibility = disponibility
-        self.rules = rules
-    
-    def verifyDisponibility(self, time: RangeTime) -> bool:
-        if not self.disponibility:
+        self._disponibility = disponibility
+        self.rules = rules or []
+        self.id = ID.generate_id()  if id==None else ID(id)
+        self.appointmentList: list[Any] = []
+        
+  
+
+    def verifyInDisponibility(self, time: RangeTime) -> bool:
+        
+        if not self._disponibility:
             return False
         
-        for rule in self.rules:
-            if not rule.isSatisfied(time):
-                return False
+         
+        if VerifyInRange.execute(time, self.rules):
+            for appointment in self.appointmentList:
+                if appointment.verifyOverleaps(time):
+                    return False
+        else:
+            return False
         
-        for ocuppied in self.timeOcupped:
-            if ocuppied.overlaps(time):
-                return False
-        
-        self.addOcuppiedTime(BaseRuleRoom(time))
-        
+        return True
+
+    def update(self, name: str | None = None, rules: list[BaseRule] | None = None, disponibility: bool | None = None):
+        if name is not None:
+            self.name = name
+        if rules is not None:
+            self.rules = rules
+        if disponibility is not None:
+            self._disponibility = disponibility
+        return self
+
+    def updateStateRoom(self, data: Any):
+        disponibility = getattr(data, "disponibility", None)
+        name = getattr(data, "name", None)
+        rules = getattr(data, "rules", None)
+        return self.update(name=name, rules=rules, disponibility=disponibility)
+
+    def delete(self) -> bool:
+        self._disponibility = False
         return True
     
    
-    def hoursDisponibility(self) -> list[RangeTime]:
-        disponibility_hours = []
-        for rule in self.rules:
-            disponibility_hours.extend(rule.hoursDisponibility())
-        
-        return disponibility_hours
        
-    
-    def addOcuppiedTime(self, time: BaseRuleRoom):
-        self.timeOcupped.append(time)
+
         
     @property
     def disponibility(self):
-        return self.__disponibility
-    
-    @property
-    def disponibility(self):
-        return self.__disponibility
+        return self._disponibility
 
  
