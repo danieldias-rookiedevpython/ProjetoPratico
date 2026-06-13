@@ -1,9 +1,9 @@
-from src.modules.agenda.aplication.dtos.useCase.command.AppointmentUseCasesDTO import UpdateAppointmentCommand
-from src.modules.agenda.aplication.dtos.exceptions import UpdateUseCaseException
-from src.modules.agenda.aplication.events.AppointmentEvent import UpdateAppointmentEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import AppointmentRepositoryPort
-from src.modules.agenda.domain.entities import Appointment
+from src.modules.Agenda.Aplication.DTOs.useCase.command.AppointmentUseCasesDTO import UpdateAppointmentCommand
+from src.modules.Agenda.Aplication.DTOs.exceptions import UpdateUseCaseException
+from src.modules.Agenda.Aplication.events.AppointmentEvent import UpdateAppointmentEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import AppointmentRepositoryPort
+from src.modules.Agenda.Domain.Entities import Appointment
 
 
 class UpdateAppointmentUseCase:
@@ -31,3 +31,4 @@ class UpdateAppointmentUseCase:
                 original=e,
             ) from e
         
+

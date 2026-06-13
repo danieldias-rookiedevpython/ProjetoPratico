@@ -2,10 +2,10 @@
 
 
 
-from src.modules.agenda.aplication.dtos.useCase.command.DoctorUseCasesDTO import UpdateDoctorCommand
-from src.modules.agenda.aplication.events.DoctorEvent import UpdateDoctorEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import DoctorRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.useCase.command.DoctorUseCasesDTO import UpdateDoctorCommand
+from src.modules.Agenda.Aplication.events.DoctorEvent import UpdateDoctorEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import DoctorRepositoryPort
 
 
 class UpdateDoctorUseCase:
@@ -23,3 +23,4 @@ class UpdateDoctorUseCase:
             return True
         
         return None
+

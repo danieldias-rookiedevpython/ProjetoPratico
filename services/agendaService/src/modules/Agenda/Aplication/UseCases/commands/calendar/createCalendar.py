@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.events.CalendarEvent import CreateCalendarEvent
-from src.modules.agenda.aplication.ports.externServices.CalendarDataPort import CalendarDataPort
-from src.modules.agenda.aplication.ports.repository import RuleRepositoryPoty
-from src.modules.agenda.aplication.ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
-from src.modules.agenda.domain.entities import Day
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.events.CalendarEvent import CreateCalendarEvent
+from src.modules.Agenda.Aplication.Ports.externServices.CalendarDataPort import CalendarDataPort
+from src.modules.Agenda.Aplication.Ports.repository import RuleRepositoryPoty
+from src.modules.Agenda.Aplication.Ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
+from src.modules.Agenda.Domain.Entities import Day
 
 
 @dataclass(frozen=True)
@@ -69,3 +69,4 @@ class CreateCalendarUseCase:
    
        
     
+

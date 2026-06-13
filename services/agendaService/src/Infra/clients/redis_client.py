@@ -1,5 +1,5 @@
-from src.infra.clients.base import ClientHealth
-from src.infra.config.settings import settings
+from src.Infra.clients.base import ClientHealth
+from src.Infra.config.settings import settings
 import json
 from typing import Any
 
@@ -63,3 +63,4 @@ class RedisClient:
         if self._client is not None:
             await self._client.aclose()
             self._client = None
+

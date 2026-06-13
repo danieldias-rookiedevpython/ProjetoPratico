@@ -19,3 +19,4 @@ class CacheService:
             value,
             ex=self.default_ttl
         )
+

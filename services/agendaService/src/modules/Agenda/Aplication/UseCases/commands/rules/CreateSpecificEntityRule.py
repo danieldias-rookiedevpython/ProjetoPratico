@@ -1,10 +1,10 @@
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.dtos.useCase.command.RulesUseCasesDTO import CreateSpecificDayRuleCommand
-from src.modules.agenda.aplication.events.RuleEvent import CreateSpecificEntityRuleEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import RuleRepositoryPort
-from src.modules.agenda.domain.rules import RuleEffect, SpecificDayRule, TargetType
-from src.modules.agenda.domain.valueObjects import Date, RangeTime
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.DTOs.useCase.command.RulesUseCasesDTO import CreateSpecificDayRuleCommand
+from src.modules.Agenda.Aplication.events.RuleEvent import CreateSpecificEntityRuleEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import RuleRepositoryPort
+from src.modules.Agenda.Domain.rules import RuleEffect, SpecificDayRule, TargetType
+from src.modules.Agenda.Domain.ValueObjects import Date, RangeTime
 
 
 class CreateSpecificDayRuleUseCase:
@@ -62,3 +62,4 @@ def _date(value: object) -> Date:
         return Date(day=int(value["day"]), month=int(value["month"]), year=int(value["year"]))
     year, month, day = str(value).split("-")
     return Date(day=int(day), month=int(month), year=int(year))
+

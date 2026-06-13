@@ -18,3 +18,4 @@ class BaseConsumer:
     async def handle(self, payload):
 
         raise NotImplementedError
+

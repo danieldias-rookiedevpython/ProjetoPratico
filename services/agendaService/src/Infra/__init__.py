@@ -1,4 +1,4 @@
-from src.infra.adapter.repository import (
+from .adapter.repository import (
     AgendaRepository,
     AppointmentRepository,
     AppointmentSchedulingRepository,
@@ -9,10 +9,17 @@ from src.infra.adapter.repository import (
     RoomRepository,
     RuleRepository,
 )
-from src.infra.adapter.ExternServices import CalendarDataClient
-from src.infra.adapter.Messaging import InMemoryEventBus
-from src.infra.clients import DatadogClient, PostgresClient, PrometheusClient, RabbitMQClient, RedisClient
-from src.infra.migrations import MigrationRunner
+
+from .adapter.ExternServices import CalendarDataClient
+from .adapter.Messaging import InMemoryEventBus
+from .clients import (
+    DatadogClient,
+    PostgresClient,
+    PrometheusClient,
+    RabbitMQClient,
+    RedisClient,
+)
+from .migrations import MigrationRunner
 
 __all__ = [
     "AgendaRepository",
@@ -33,3 +40,4 @@ __all__ = [
     "RoomRepository",
     "RuleRepository",
 ]
+

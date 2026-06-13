@@ -1,4 +1,4 @@
-from src.infra.adapter.repository.base import SQLiteRepository
+from src.Infra.adapter.repository.base import SQLiteRepository
 
 
 class ClinicRepository(SQLiteRepository):
@@ -35,3 +35,4 @@ class ClinicRepository(SQLiteRepository):
                     "SELECT data FROM clinics ORDER BY created_at DESC LIMIT 1"
                 ).fetchone()
             return self._load(row["data"]) if row else None
+

@@ -1,9 +1,9 @@
 
 
 
-from src.modules.agenda.aplication.events.DoctorEvent import DeleteDoctorEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import DoctorRepositoryPort
+from src.modules.Agenda.Aplication.events.DoctorEvent import DeleteDoctorEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import DoctorRepositoryPort
 
 
 class DeleteDoctorUseCase:
@@ -19,3 +19,4 @@ class DeleteDoctorUseCase:
             self._bus.emit(DeleteDoctorEvent(doctor_id))
             return True
         return False
+

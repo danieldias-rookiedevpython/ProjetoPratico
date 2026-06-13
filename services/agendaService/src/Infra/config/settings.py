@@ -50,3 +50,4 @@ class AgendaSettings:
 
 
 settings = AgendaSettings()
+

@@ -10,3 +10,4 @@ class AppointmentSchedulingInputDTO:
     date: str
     weekday: str
     room: str | None = None
+

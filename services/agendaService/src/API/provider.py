@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import cast
 
-from src.infra import (
+from src.Infra import (
     AgendaRepository,
     AppointmentRepository,
     AppointmentSchedulingRepository,
@@ -14,9 +14,9 @@ from src.infra import (
     RoomRepository,
     RuleRepository,
 )
-from src.infra.adapter.Messaging.websocket.container import connection_manager
-from src.infra.adapter.Messaging.rabbitMQ.userServiceConsumers import UserServiceCreatedEventsConsumer
-from src.infra.adapter.repository.querys import (
+from src.Infra.adapter.Messaging.websocket.container import connection_manager
+from src.Infra.adapter.Messaging.rabbitMQ.userServiceConsumers import UserServiceCreatedEventsConsumer
+from src.Infra.adapter.repository.querys import (
     AppointmentQueryRepository,
     CalendarQueryRepository,
     ClinicQueryRepository,
@@ -25,18 +25,18 @@ from src.infra.adapter.repository.querys import (
     RoomQueryRepository,
     RuleQueryRepository,
 )
-from src.infra.clients import DatadogClient, PostgresClient, PrometheusClient, RabbitMQClient, RedisClient
-from src.infra.config.settings import settings
-from src.infra.handlers import (
+from src.Infra.clients import DatadogClient, PostgresClient, PrometheusClient, RabbitMQClient, RedisClient
+from src.Infra.config.settings import settings
+from src.Infra.handlers import (
     InfraHealthHandler,
     UserServiceDoctorCreatedHandler,
     UserServiceDoctorDeletedHandler,
     UserServicePatientCreatedHandler,
     UserServicePatientDeletedHandler,
 )
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.externServices.CalendarDataPort import CalendarDataPort
-from src.modules.agenda.aplication.ports.repository import (
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.externServices.CalendarDataPort import CalendarDataPort
+from src.modules.Agenda.Aplication.Ports.repository import (
     AppointmentRepositoryPort,
     AppointmentSchedulingRepositoryPort,
     CalendarRepositoryPort,
@@ -46,7 +46,7 @@ from src.modules.agenda.aplication.ports.repository import (
     RoomRepositoryPort,
     RuleRepositoryPort,
 )
-from src.modules.agenda.aplication.ports.repository.querys import (
+from src.modules.Agenda.Aplication.Ports.repository.querys import (
     AppointmentQueryRepositoryPort,
     CalendarQueryRepositoryPort,
     ClinicQueryRepositoryPort,
@@ -55,76 +55,76 @@ from src.modules.agenda.aplication.ports.repository.querys import (
     RoomQueryRepositoryPort,
     RuleQueryRepositoryPort,
 )
-from src.modules.agenda.aplication.useCases.commands.appointment.CreateAppointment import (
+from src.modules.Agenda.Aplication.UseCases.commands.appointment.CreateAppointment import (
     CreateAppointmentUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.appointment.CreateAppointmentType import (
+from src.modules.Agenda.Aplication.UseCases.commands.appointment.CreateAppointmentType import (
     CreateAppointmentTypeUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.appointment.DeleteAppointment import (
+from src.modules.Agenda.Aplication.UseCases.commands.appointment.DeleteAppointment import (
     DeleteAppointmentUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.appointment.UpdateAppointment import (
+from src.modules.Agenda.Aplication.UseCases.commands.appointment.UpdateAppointment import (
     UpdateAppointmentUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.calendar.CreateCalendar import (
+from src.modules.Agenda.Aplication.UseCases.commands.calendar.createCalendar import (
     CreateCalendarUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.calendar.DeleteCalendar import (
+from src.modules.Agenda.Aplication.UseCases.commands.calendar.deleteCalendar import (
     DeleteCalendarUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.calendar.UpdateDay import (
+from src.modules.Agenda.Aplication.UseCases.commands.calendar.UpdateDay import (
     UpdateDayUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.clinic.CreateClinic import (
+from src.modules.Agenda.Aplication.UseCases.commands.clinic.CreateClinic import (
     CreateClinicUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.clinic.DeleteClinic import (
+from src.modules.Agenda.Aplication.UseCases.commands.clinic.DeleteClinic import (
     DeleteClinicUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.doctor.CreateDoctor import (
+from src.modules.Agenda.Aplication.UseCases.commands.doctor.createDoctor import (
     CreateDoctorUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.doctor.DeleteDoctor import (
+from src.modules.Agenda.Aplication.UseCases.commands.doctor.deleteDoctor import (
     DeleteDoctorUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.doctor.UpdateDoctor import (
+from src.modules.Agenda.Aplication.UseCases.commands.doctor.UpdateDoctor import (
     UpdateDoctorUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.patient.CreatePacient import (
+from src.modules.Agenda.Aplication.UseCases.commands.patient.createPacient import (
     CreatePatientUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.patient.DeletePacient import (
+from src.modules.Agenda.Aplication.UseCases.commands.patient.deletePacient import (
     DeletePatientUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.room.CreateRoom import (
+from src.modules.Agenda.Aplication.UseCases.commands.room.createRoom import (
     CreateRoomUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.room.DeleteRoom import (
+from src.modules.Agenda.Aplication.UseCases.commands.room.deleteRoom import (
     DeleteRoomUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.room.UpdateStateRoom import (
+from src.modules.Agenda.Aplication.UseCases.commands.room.UpdateStateRoom import (
     UpdateRoomUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.rules.CreateBlockRule import (
+from src.modules.Agenda.Aplication.UseCases.commands.rules.CreateBlockRule import (
     CreateBlockRuleUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.rules.CreateGenericRule import (
+from src.modules.Agenda.Aplication.UseCases.commands.rules.CreateGenericRule import (
     CreateGenericRuleUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.rules.CreateSpecificEntityRule import (
+from src.modules.Agenda.Aplication.UseCases.commands.rules.CreateSpecificEntityRule import (
     CreateSpecificDayRuleUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.rules.CreateSpecificRule import (
+from src.modules.Agenda.Aplication.UseCases.commands.rules.CreateSpecificRule import (
     CreateSpecificRuleUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.rules.CreateWeekRule import (
+from src.modules.Agenda.Aplication.UseCases.commands.rules.CreateWeekRule import (
     CreateWeekRuleUseCase,
 )
-from src.modules.agenda.aplication.useCases.commands.rules.DeleteRule import (
+from src.modules.Agenda.Aplication.UseCases.commands.rules.DeleteRule import (
     DeleteRuleUseCase,
 )
-from src.modules.agenda.aplication.useCases.querys import (
+from src.modules.Agenda.Aplication.UseCases.querys import (
     GetAppointmentByIdUseCase,
     GetClinicByIdUseCase,
     GetDayByIdUseCase,
@@ -515,3 +515,4 @@ def get_user_service_created_events_consumer() -> UserServiceCreatedEventsConsum
         doctor_deleted_handler=get_user_service_doctor_deleted_handler(),
         patient_deleted_handler=get_user_service_patient_deleted_handler(),
     )
+

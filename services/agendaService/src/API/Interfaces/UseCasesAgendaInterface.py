@@ -11,3 +11,4 @@ class IUseCasesAgenda(Protocol):
     def execute(self, name: str):
         pass
  
+

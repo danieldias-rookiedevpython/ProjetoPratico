@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, time, timedelta
-from src.modules.agenda.domain.exceptions import (
+from src.modules.Agenda.Domain.Exceptions import (
     InvalidTimeFormatException,
     InvalidTimeRangeException,
     MissingTimeBoundaryException,
@@ -184,3 +184,4 @@ class RangeTime:
         
         
         
+

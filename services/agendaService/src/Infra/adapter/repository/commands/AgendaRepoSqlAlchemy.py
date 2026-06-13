@@ -1,4 +1,4 @@
-from src.infra.adapter.repository.base import SQLiteRepository
+from src.Infra.adapter.repository.base import SQLiteRepository
 
 
 class AgendaRepository(SQLiteRepository):
@@ -59,3 +59,4 @@ class AgendaRepository(SQLiteRepository):
 
     def delete(self, agenda_id: int):
         return self._delete_by_id("agenda_records", str(agenda_id))
+

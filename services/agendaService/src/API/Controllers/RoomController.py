@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.api.provider import (
+from src.API.provider import (
     get_create_room_use_case,
     get_delete_room_use_case,
     get_list_rooms_query_use_case,
     get_room_by_id_query_use_case,
     get_update_room_use_case,
 )
-from src.modules.agenda.aplication.dtos.useCase.command.RoomUseCasesDTO import (
+from src.modules.Agenda.Aplication.DTOs.useCase.command.RoomUseCasesDTO import (
     CreateRoomCommand,
     UpdateRoomCommand,
 )
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
 
 
 routerRoom = APIRouter(prefix="/rooms", tags=["Rooms"])
@@ -53,3 +53,4 @@ async def update_room(
 @routerRoom.delete("/{room_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_room(room_id: str, use_case=Depends(get_delete_room_use_case)):
     await use_case.execute(room_id)
+

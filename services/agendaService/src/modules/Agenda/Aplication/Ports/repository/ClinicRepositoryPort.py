@@ -14,3 +14,4 @@ class ClinicRepositoryPort(ABC):
 
     async def getClinic(self, clinic_id: str) -> Any:
         pass
+

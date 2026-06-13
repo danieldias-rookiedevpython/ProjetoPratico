@@ -22,7 +22,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "mypy (>=1.19.1,<2.0.0)",
-    "taskipy (>=1.14.1,<2.0.0)"
+    "taskipy (>=1.14.1,<2.0.0)",
+    "httpx (>=0.28.1,<0.29.0)"
 ]
 
 

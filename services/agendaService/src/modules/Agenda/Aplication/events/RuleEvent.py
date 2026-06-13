@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.modules.agenda.domain.rules import BaseRule
+from src.modules.Agenda.Domain.rules import BaseRule
 
 
 @dataclass(frozen=True)
@@ -31,3 +31,4 @@ class CreateWeekRuleEvent:
 @dataclass(frozen=True)
 class DeleteRuleEvent:
     rule_id: str
+

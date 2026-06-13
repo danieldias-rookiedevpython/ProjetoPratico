@@ -1,6 +1,6 @@
-from src.modules.agenda.domain.rules.BaseRule import BaseRule
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
-from ..valueObjects.Id import ID
+from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
+from ..ValueObjects.Id import ID
 from ..services.VerifyInRange import VerifyInRange
 
 
@@ -88,3 +88,4 @@ class Doctor:
         return self._availability
     
     
+

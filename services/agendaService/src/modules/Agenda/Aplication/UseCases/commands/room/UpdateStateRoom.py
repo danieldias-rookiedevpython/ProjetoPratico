@@ -1,8 +1,8 @@
 
-from src.modules.agenda.aplication.dtos.useCase.command.RoomUseCasesDTO import UpdateRoomCommand
-from src.modules.agenda.aplication.events.RoomEvent import UpdateRoomEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository.RoomRepositoryPort import RoomRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.useCase.command.RoomUseCasesDTO import UpdateRoomCommand
+from src.modules.Agenda.Aplication.events.RoomEvent import UpdateRoomEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository.RoomRepositoryPort import RoomRepositoryPort
 
 
 class UpdateRoomUseCase:
@@ -21,3 +21,4 @@ class UpdateRoomUseCase:
              return True
          
          return False
+

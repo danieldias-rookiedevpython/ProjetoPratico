@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 from typing import Any
-from src.modules.agenda.domain.entities.Patient import Patient
+from src.modules.Agenda.Domain.Entities.Patient import Patient
 
 class PatientRepositoryPort(ABC):
     @abstractmethod
@@ -20,3 +20,4 @@ class PatientRepositoryPort(ABC):
 
     async def getPatient(self, patient_id: str) -> Any:
         return await self.getPacient(patient_id)
+

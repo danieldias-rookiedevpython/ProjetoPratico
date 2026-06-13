@@ -1,11 +1,11 @@
-from src.modules.agenda.domain.entities.Day import Day
-from src.modules.agenda.domain.entities.Doctor import Doctor
-from src.modules.agenda.domain.entities.Patient import Patient
-from src.modules.agenda.domain.entities.Room import Room
-from src.modules.agenda.domain.valueObjects import Hour, RangeTime
-from src.modules.agenda.domain.valueObjects.EnumAppointment import AppointmentStatus
-from src.modules.agenda.domain.valueObjects.AppointmentType import  AppointmentType
-from src.modules.agenda.domain.valueObjects.Id import ID
+from src.modules.Agenda.Domain.Entities.Day import Day
+from src.modules.Agenda.Domain.Entities.Doctor import Doctor
+from src.modules.Agenda.Domain.Entities.Patient import Patient
+from src.modules.Agenda.Domain.Entities.Room import Room
+from src.modules.Agenda.Domain.ValueObjects import Hour, RangeTime
+from src.modules.Agenda.Domain.ValueObjects.EnumAppointment import AppointmentStatus
+from src.modules.Agenda.Domain.ValueObjects.AppointmentType import  AppointmentType
+from src.modules.Agenda.Domain.ValueObjects.Id import ID
 
 
 
@@ -100,3 +100,4 @@ class Appointment:
         return self._status
     
     
+

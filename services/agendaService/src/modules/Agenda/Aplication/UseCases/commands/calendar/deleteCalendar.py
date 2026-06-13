@@ -1,6 +1,6 @@
-from src.modules.agenda.aplication.dtos.exceptions import DeleteUseCaseException
-from src.modules.agenda.aplication.events.CalendarEvent import DeleteCalendarEvent
-from src.modules.agenda.aplication.ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.exceptions import DeleteUseCaseException
+from src.modules.Agenda.Aplication.events.CalendarEvent import DeleteCalendarEvent
+from src.modules.Agenda.Aplication.Ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
 
 
 class DeleteCalendarUseCase:
@@ -22,3 +22,4 @@ class DeleteCalendarUseCase:
                 context={"year": ano},
                 original=e,
             ) from e
+

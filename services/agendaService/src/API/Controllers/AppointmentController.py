@@ -1,18 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.api.provider import (
+from src.API.provider import (
     get_appointment_by_id_query_use_case,
     get_create_appointment_use_case,
     get_delete_appointment_use_case,
     get_list_appointments_query_use_case,
     get_update_appointment_use_case,
 )
-from src.modules.agenda.aplication.dtos.useCase.command.AppointmentUseCasesDTO import (
+from src.modules.Agenda.Aplication.DTOs.useCase.command.AppointmentUseCasesDTO import (
     CreateAppointmentCommand,
     DeleteAppointmentCommand,
     UpdateAppointmentCommand,
 )
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
 
 
 routerAppointment = APIRouter(prefix="/appointments", tags=["Appointments"])
@@ -67,3 +67,4 @@ async def delete_appointment(
     use_case=Depends(get_delete_appointment_use_case),
 ):
     await use_case.execute(DeleteAppointmentCommand(id=appointment_id))
+

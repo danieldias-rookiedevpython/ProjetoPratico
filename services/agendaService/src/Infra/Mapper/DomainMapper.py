@@ -1,5 +1,5 @@
-from src.modules.agenda.domain.entities import  Day, Clinic, Appointment, Doctor, Patient, Room
-from src.infra.models import CalendarModel, DayModel, ClinicModel, AppointmentModel, DoctorModel, PatientModel, RoomModel, RuleModel
+from src.modules.Agenda.Domain.Entities import  Day, Clinic, Appointment, Doctor, Patient, Room
+from src.Infra.models import CalendarModel, DayModel, ClinicModel, AppointmentModel, DoctorModel, PatientModel, RoomModel, RuleModel
 
 
 
@@ -87,3 +87,4 @@ class RuleMapper:
     @staticmethod
     def toPersistence(domain):
         pass
+

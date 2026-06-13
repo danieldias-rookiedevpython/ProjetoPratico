@@ -10,3 +10,4 @@ class BusPort:
 
     def on(self, event: Any, callback: Callable[..., Any]) -> Any:
         pass
+

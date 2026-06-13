@@ -8,3 +8,4 @@ class ClientHealth:
     ok: bool
     detail: str | None = None
     metadata: dict[str, Any] | None = None
+

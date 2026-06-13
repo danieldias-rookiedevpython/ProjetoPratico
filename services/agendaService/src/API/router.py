@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.api.controllers import (
+from src.API.Controllers import (
     routerAppointment,
     routerCalendar,
     routerClinic,
@@ -26,3 +26,4 @@ api_router.include_router(routerRule)
 api_router.include_router(routerWebsocket)
 
 routerAgenda = api_router
+

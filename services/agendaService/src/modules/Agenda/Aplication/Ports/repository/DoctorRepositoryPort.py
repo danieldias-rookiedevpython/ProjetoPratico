@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 from typing import Any
-from src.modules.agenda.domain.entities.Doctor import Doctor
+from src.modules.Agenda.Domain.Entities.Doctor import Doctor
 
 
 class DoctorRepositoryPort(ABC):
@@ -25,3 +25,4 @@ class DoctorRepositoryPort(ABC):
 
     async def GetDoctorGenericRules(self) -> list[Any]:
         return []
+

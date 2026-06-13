@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 
-from src.api.provider import get_connection_manager
+from src.API.provider import get_connection_manager
 
 
 router = APIRouter(tags=["Websocket"])
@@ -14,3 +14,4 @@ async def websocket_endpoint(websocket: WebSocket, manager=Depends(get_connectio
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+

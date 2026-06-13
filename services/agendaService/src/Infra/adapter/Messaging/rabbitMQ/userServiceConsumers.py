@@ -65,3 +65,4 @@ class UserServiceCreatedEventsConsumer:
             return {"handled": False, "reason": f"ignored event route={route}"}
 
         return asdict(result) if is_dataclass(result) else dict(result)
+

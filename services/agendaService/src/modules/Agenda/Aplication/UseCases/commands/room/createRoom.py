@@ -1,8 +1,8 @@
-from src.modules.agenda.domain.entities.Room import Room
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.events.RoomEvent import CreateRoomEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository.RoomRepositoryPort import RoomRepositoryPort
+from src.modules.Agenda.Domain.Entities.Room import Room
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.events.RoomEvent import CreateRoomEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository.RoomRepositoryPort import RoomRepositoryPort
 
 
 class CreateRoomUseCase:
@@ -28,3 +28,4 @@ class CreateRoomUseCase:
                 context={"name": name},
                 original=e,
             ) from e
+

@@ -1,4 +1,4 @@
-from src.infra.adapter.repository.base import SQLiteRepository
+from src.Infra.adapter.repository.base import SQLiteRepository
 
 
 class RuleRepository(SQLiteRepository):
@@ -42,3 +42,4 @@ class RuleRepository(SQLiteRepository):
                 "SELECT data FROM rules WHERE target_type IS NULL OR target_type = 'DAY'"
             ).fetchall()
             return [self._load(row["data"]) for row in rows]
+

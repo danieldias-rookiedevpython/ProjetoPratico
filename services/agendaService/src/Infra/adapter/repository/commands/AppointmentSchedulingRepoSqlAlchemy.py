@@ -1,11 +1,11 @@
-from src.infra.adapter.repository.base import SQLiteRepository
-from src.modules.agenda.aplication.dtos.repositorys.output.AppointmentSchedulingOutputDTO import (
+from src.Infra.adapter.repository.base import SQLiteRepository
+from src.modules.Agenda.Aplication.DTOs.repositorys.output.AppointmentSchedulingOutputDTO import (
     AppointmentSchedulingOutputDTO,
 )
-from src.modules.agenda.domain.entities import Day, Doctor, Patient, Room
-from src.modules.agenda.domain.rules import GenericRule, RuleEffect, TargetType
-from src.modules.agenda.domain.valueObjects import AppointmentType, Date, DayStatus, Hour
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Domain.Entities import Day, Doctor, Patient, Room
+from src.modules.Agenda.Domain.rules import GenericRule, RuleEffect, TargetType
+from src.modules.Agenda.Domain.ValueObjects import AppointmentType, Date, DayStatus, Hour
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
 
 
 class AppointmentSchedulingRepository(SQLiteRepository):
@@ -56,3 +56,4 @@ class AppointmentSchedulingRepository(SQLiteRepository):
         clean = value.split("T", 1)[0]
         year, month, day = clean.split("-")
         return Date(day=int(day), month=int(month), year=int(year))
+

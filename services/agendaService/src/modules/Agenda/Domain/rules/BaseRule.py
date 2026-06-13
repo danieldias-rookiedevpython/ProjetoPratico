@@ -1,10 +1,10 @@
 
 from abc import ABC
 from datetime import time
-from src.modules.agenda.domain.rules.RuleEnum import RuleEffect, TargetType
-from src.modules.agenda.domain.valueObjects.Id import ID
-from src.modules.agenda.domain.valueObjects.Date import Date
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Domain.rules.RuleEnum import RuleEffect, TargetType
+from src.modules.Agenda.Domain.ValueObjects.Id import ID
+from src.modules.Agenda.Domain.ValueObjects.Date import Date
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
 
 
   
@@ -89,3 +89,4 @@ class BaseRule(ABC):
     @property
     def nome(self) -> str | None:
         return self._nome
+

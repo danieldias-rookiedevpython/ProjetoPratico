@@ -1,11 +1,10 @@
 import json
 from typing import Any
 
-from src.infra.database import Database, database
-from src.infra.clients import RedisClient
-from src.infra.mapper.JsonMapper import to_primitive
-from src.infra.migrations import MigrationRunner
-
+from src.Infra.database import Database, database
+from src.Infra.clients import RedisClient
+from src.Infra.Mapper.JsonMapper import to_primitive
+from src.Infra.migrations import MigrationRunner
 
 class SQLiteRepository:
     _migrated = False
@@ -73,3 +72,4 @@ class SQLiteRepository:
                 (entity_id,),
             )
             return cursor.rowcount > 0
+

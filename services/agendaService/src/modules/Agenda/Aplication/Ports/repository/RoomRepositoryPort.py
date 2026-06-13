@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 from typing import Any
-from src.modules.agenda.domain.entities.Room import Room
+from src.modules.Agenda.Domain.Entities.Room import Room
 
 class RoomRepositoryPort(ABC):
     async def save(self, room: Room) -> None:
@@ -21,3 +21,4 @@ class RoomRepositoryPort(ABC):
 
     async def getGenericRulesRoom(self) -> list[Any]:
        return []
+

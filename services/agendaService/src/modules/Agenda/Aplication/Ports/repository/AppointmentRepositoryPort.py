@@ -24,3 +24,4 @@ class AppointmentRepositoryPort(ABC):
 
     async def saveType(self, appointment_type: Any) -> None:
         pass
+

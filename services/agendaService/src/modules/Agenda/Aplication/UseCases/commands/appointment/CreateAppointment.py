@@ -1,11 +1,11 @@
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.dtos.repositorys.input import AppointmentSchedulingInputDTO
-from src.modules.agenda.aplication.events.AppointmentEvent import CreateAppointmentEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository.AppointmentRepositoryPort import AppointmentRepositoryPort
-from src.modules.agenda.aplication.ports.repository.AppointmentSchedulingRepositoryPort import AppointmentSchedulingRepositoryPort
-from src.modules.agenda.aplication.dtos.useCase.command.AppointmentUseCasesDTO import CreateAppointmentCommand
-from src.modules.agenda.domain.entities import Appointment
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.DTOs.repositorys.input import AppointmentSchedulingInputDTO
+from src.modules.Agenda.Aplication.events.AppointmentEvent import CreateAppointmentEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository.AppointmentRepositoryPort import AppointmentRepositoryPort
+from src.modules.Agenda.Aplication.Ports.repository.AppointmentSchedulingRepositoryPort import AppointmentSchedulingRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.useCase.command.AppointmentUseCasesDTO import CreateAppointmentCommand
+from src.modules.Agenda.Domain.Entities import Appointment
 
 
 class CreateAppointmentUseCase:
@@ -55,3 +55,4 @@ class CreateAppointmentUseCase:
             ) from e
       
     
+

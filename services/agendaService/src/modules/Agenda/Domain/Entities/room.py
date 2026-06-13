@@ -1,8 +1,8 @@
 from typing import Any
-from src.modules.agenda.domain.rules.BaseRule import BaseRule
-from src.modules.agenda.domain.services import VerifyInRange
-from src.modules.agenda.domain.valueObjects.Id import ID
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
+from src.modules.Agenda.Domain.services import VerifyInRange
+from src.modules.Agenda.Domain.ValueObjects.Id import ID
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
 
 
 
@@ -60,3 +60,4 @@ class Room:
         return self._disponibility
 
  
+

@@ -25,3 +25,6 @@ docker stack deploy \
   --compose-file services/worker/service.yml \
   minha-stack
 """
+[tool.pytest.ini_options]
+testpaths = ["services/agendaService/tests"]
+norecursedirs = ["backup_tests"]

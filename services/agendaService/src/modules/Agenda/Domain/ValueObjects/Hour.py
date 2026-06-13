@@ -19,3 +19,4 @@ class Hour:
 
     def _validate(self, value: str) -> None:
         datetime.strptime(value, self.TIME_PATTERN)
+

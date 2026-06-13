@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.modules.agenda.domain.entities import Appointment
+from src.modules.Agenda.Domain.Entities import Appointment
 
 
 @dataclass(frozen=True)
@@ -21,3 +21,4 @@ class DeleteAppointmentEvent:
 @dataclass(frozen=True)
 class CancelAppointmentEvent:
     appointment_id: str
+

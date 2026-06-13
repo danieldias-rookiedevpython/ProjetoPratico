@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
-from src.modules.agenda.domain.rules.BaseRule import BaseRule
+from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
 
 class RuleRepositoryPort(ABC):
     
@@ -18,3 +18,4 @@ class RuleRepositoryPort(ABC):
 
     async def getDayRules(self) -> list[Any]:
         return []
+

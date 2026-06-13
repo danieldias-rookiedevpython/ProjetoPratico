@@ -5,4 +5,12 @@ from .Doctor import Doctor
 from .Patient import Patient
 from .Room import Room
 
-__all__ = ["Appointment", "Clinic", "Day", "Doctor", "Patient", "Room"]
+__all__ = [
+    "Appointment",
+    "Clinic",
+    "Day",
+    "Doctor",
+    "Patient",
+    "Room",
+]
+

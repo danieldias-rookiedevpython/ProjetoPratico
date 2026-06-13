@@ -15,3 +15,4 @@ def get_sqlite_path(database_url: str | None = None) -> Path:
     if not url.startswith("sqlite:///"):
         return DEFAULT_SQLITE_PATH
     return Path(url.replace("sqlite:///", "", 1))
+

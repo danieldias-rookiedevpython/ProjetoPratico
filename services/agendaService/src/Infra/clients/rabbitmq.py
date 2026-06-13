@@ -2,9 +2,9 @@ from typing import Any
 
 import aio_pika
 
-from src.infra.clients.base import ClientHealth
-from src.infra.config.settings import settings
-from src.infra.mapper.JsonMapper import to_primitive
+from src.Infra.clients.base import ClientHealth
+from src.Infra.config.settings import settings
+from src.Infra.Mapper.JsonMapper import to_primitive
 
 
 class RabbitMQClient:
@@ -68,3 +68,4 @@ class RabbitMQClient:
         self._connection = None
         self._channel = None
         self._exchange = None
+

@@ -1,4 +1,4 @@
-from src.infra.adapter.repository.base import SQLiteRepository
+from src.Infra.adapter.repository.base import SQLiteRepository
 
 
 class DoctorRepository(SQLiteRepository):
@@ -38,3 +38,4 @@ class DoctorRepository(SQLiteRepository):
                 "SELECT data FROM rules WHERE target_type = 'DOCTOR' AND target IS NULL"
             ).fetchall()
             return [self._load(row["data"]) for row in rows]
+

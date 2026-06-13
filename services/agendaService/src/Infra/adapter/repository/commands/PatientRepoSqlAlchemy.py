@@ -1,4 +1,4 @@
-from src.infra.adapter.repository.base import SQLiteRepository
+from src.Infra.adapter.repository.base import SQLiteRepository
 
 
 class PatientRepository(SQLiteRepository):
@@ -31,3 +31,4 @@ class PatientRepository(SQLiteRepository):
 
     async def getPatient(self, patient_id: str):
         return await self.getPacient(patient_id)
+

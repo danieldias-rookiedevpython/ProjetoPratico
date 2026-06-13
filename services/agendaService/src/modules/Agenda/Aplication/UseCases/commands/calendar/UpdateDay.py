@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from src.modules.agenda.aplication.dtos.exceptions import UpdateUseCaseException
-from src.modules.agenda.aplication.events.CalendarEvent import UpdateDayEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
-from src.modules.agenda.domain.entities import Day
+from src.modules.Agenda.Aplication.DTOs.exceptions import UpdateUseCaseException
+from src.modules.Agenda.Aplication.events.CalendarEvent import UpdateDayEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
+from src.modules.Agenda.Domain.Entities import Day
 
 
 @dataclass(frozen=True)
@@ -35,3 +35,4 @@ class UpdateDayUseCase:
                 context={"command": str(command)},
                 original=e,
             ) from e
+

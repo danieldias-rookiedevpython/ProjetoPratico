@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 
-from src.api.provider import (
+from src.API.provider import (
     get_infra_health_handler,
     get_user_service_doctor_created_handler,
     get_user_service_doctor_deleted_handler,
     get_user_service_patient_created_handler,
     get_user_service_patient_deleted_handler,
 )
-from src.infra.handlers import (
+from src.Infra.handlers import (
     InfraHealthHandler,
     UserServiceDoctorCreatedHandler,
     UserServiceDoctorDeletedHandler,
@@ -54,3 +54,4 @@ async def handle_user_service_patient_deleted(
     handler: UserServicePatientDeletedHandler = Depends(get_user_service_patient_deleted_handler),
 ):
     return await handler.handle(payload)
+

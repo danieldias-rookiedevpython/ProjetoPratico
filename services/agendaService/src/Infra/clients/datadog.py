@@ -1,7 +1,7 @@
 import os
 
-from src.infra.clients.base import ClientHealth
-from src.infra.config.settings import settings
+from src.Infra.clients.base import ClientHealth
+from src.Infra.config.settings import settings
 
 
 class DatadogClient:
@@ -32,3 +32,4 @@ class DatadogClient:
                 "agent_host": settings.datadog_agent_host,
             },
         )
+

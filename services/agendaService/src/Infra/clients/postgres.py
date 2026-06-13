@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 
-from src.infra.clients.base import ClientHealth
-from src.infra.config.settings import settings
+from src.Infra.clients.base import ClientHealth
+from src.Infra.config.settings import settings
 
 
 class PostgresClient:
@@ -32,3 +32,4 @@ class PostgresClient:
             )
         except Exception as exc:
             return ClientHealth("postgres", False, str(exc))
+

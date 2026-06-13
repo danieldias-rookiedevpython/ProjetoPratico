@@ -1,10 +1,10 @@
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.dtos.useCase.command.RulesUseCasesDTO import CreateGenericRuleCommand
-from src.modules.agenda.aplication.events.RuleEvent import CreateGenericRuleEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import RuleRepositoryPort
-from src.modules.agenda.domain.rules import GenericRule, RuleEffect, TargetType
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.DTOs.useCase.command.RulesUseCasesDTO import CreateGenericRuleCommand
+from src.modules.Agenda.Aplication.events.RuleEvent import CreateGenericRuleEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import RuleRepositoryPort
+from src.modules.Agenda.Domain.rules import GenericRule, RuleEffect, TargetType
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
 
 
 class CreateGenericRuleUseCase:
@@ -49,3 +49,4 @@ def _range(value: object) -> RangeTime:
         return RangeTime(str(value["start_time"]), str(value["end_time"]))
     start, end = str(value).split("-", 1)
     return RangeTime(start.strip(), end.strip())
+

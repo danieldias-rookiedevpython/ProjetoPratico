@@ -18,3 +18,4 @@ class ListDaysQuery:
     month: int | None = None
     limit: int | None = None
     offset: int = 0
+

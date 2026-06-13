@@ -1,8 +1,8 @@
 
-from src.modules.agenda.domain.valueObjects.Date import Date
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
-from src.modules.agenda.domain.rules.RuleEnum import RuleEffect
-from src.modules.agenda.domain.rules.BaseRule import BaseRule
+from src.modules.Agenda.Domain.ValueObjects.Date import Date
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Domain.rules.RuleEnum import RuleEffect
+from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
 
 
 class SpecificRule(BaseRule):
@@ -22,3 +22,4 @@ class SpecificRule(BaseRule):
             description=description,
             nome = nome
         )
+

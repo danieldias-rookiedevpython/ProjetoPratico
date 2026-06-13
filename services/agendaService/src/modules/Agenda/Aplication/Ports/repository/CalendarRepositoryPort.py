@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 
 from typing import Any
-from src.modules.agenda.domain.entities import Day
+from src.modules.Agenda.Domain.Entities import Day
 
 class CalendarRepositoryPort (ABC):
    
@@ -24,3 +24,4 @@ class CalendarRepositoryPort (ABC):
 
    async def get(self, day_id: str) -> Any:
        pass
+

@@ -18,3 +18,4 @@ class WebSocketGateway:
             "event": "appointment_scheduled",
             "appointment_id": appointment_id
         })
+

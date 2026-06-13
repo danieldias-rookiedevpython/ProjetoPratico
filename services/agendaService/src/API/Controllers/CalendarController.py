@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, status
 from pydantic import BaseModel
 
-from src.api.provider import (
+from src.API.provider import (
     get_create_calendar_use_case,
     get_delete_calendar_use_case,
     get_day_by_id_query_use_case,
     get_list_days_query_use_case,
     get_update_day_use_case,
 )
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListDaysQuery
-from src.modules.agenda.aplication.useCases.commands.calendar.CreateCalendar import CreateCalendarCommand
-from src.modules.agenda.aplication.useCases.commands.calendar.UpdateDay import UpdateDayCommand
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListDaysQuery
+from src.modules.Agenda.Aplication.UseCases.commands.calendar.createCalendar import CreateCalendarCommand
+from src.modules.Agenda.Aplication.UseCases.commands.calendar.UpdateDay import UpdateDayCommand
 
 
 class CreateCalendarRequest(BaseModel):
@@ -65,3 +65,4 @@ async def update_day(
 @routerCalendar.delete("/{ano}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_calendar(ano: int, use_case=Depends(get_delete_calendar_use_case)):
     await use_case.execute(str(ano))
+

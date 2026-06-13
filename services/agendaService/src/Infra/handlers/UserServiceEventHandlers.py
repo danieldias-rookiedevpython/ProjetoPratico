@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 from typing import Any
 
-from src.modules.agenda.aplication.dtos.useCase.command.DoctorUseCasesDTO import CreateDoctorCommand
-from src.modules.agenda.aplication.dtos.useCase.command.PatientUseCasesDTO import CreatePatientCommand
-from src.modules.agenda.aplication.useCases.commands.doctor.CreateDoctor import CreateDoctorUseCase
-from src.modules.agenda.aplication.useCases.commands.doctor.DeleteDoctor import DeleteDoctorUseCase
-from src.modules.agenda.aplication.useCases.commands.patient.CreatePacient import CreatePatientUseCase
-from src.modules.agenda.aplication.useCases.commands.patient.DeletePacient import DeletePatientUseCase
-
+from src.modules.Agenda.Aplication.DTOs.useCase.command.DoctorUseCasesDTO import CreateDoctorCommand
+from src.modules.Agenda.Aplication.DTOs.useCase.command.PatientUseCasesDTO import CreatePatientCommand
+from src.modules.Agenda.Aplication.UseCases.commands.doctor.createDoctor import CreateDoctorUseCase
+from src.modules.Agenda.Aplication.UseCases.commands.doctor.deleteDoctor import DeleteDoctorUseCase
+from src.modules.Agenda.Aplication.UseCases.commands.patient.createPacient import CreatePatientUseCase
+from src.modules.Agenda.Aplication.UseCases.commands.patient.deletePacient import DeletePatientUseCase
 
 def _payload_value(payload: Any, *names: str, default: Any = None) -> Any:
     event_payload = payload.get("data") if isinstance(payload, dict) and isinstance(payload.get("data"), dict) else payload
@@ -87,3 +86,4 @@ class UserServicePatientDeletedHandler:
         external_id = _string_id(_payload_value(payload, "pacient_id", "patient_id", "user_id", "id"))
         handled = await self._use_case.execute(external_id)
         return UserServiceEventResult(bool(handled), "patient", external_id=external_id)
+

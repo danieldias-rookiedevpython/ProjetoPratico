@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.api.provider import (
+from src.API.provider import (
     get_create_patient_use_case,
     get_delete_patient_use_case,
     get_patient_by_id_query_use_case,
     get_patient_repository,
     get_list_patients_query_use_case,
 )
-from src.modules.agenda.aplication.dtos.useCase.command.PatientUseCasesDTO import (
+from src.modules.Agenda.Aplication.DTOs.useCase.command.PatientUseCasesDTO import (
     CreatePatientCommand,
     UpdatePatientCommand,
 )
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
 
 
 routerPatient = APIRouter(prefix="/patients", tags=["Patients"])
@@ -57,3 +57,4 @@ async def update_patient(
 @routerPatient.delete("/{patient_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_patient(patient_id: str, use_case=Depends(get_delete_patient_use_case)):
     await use_case.execute(patient_id)
+

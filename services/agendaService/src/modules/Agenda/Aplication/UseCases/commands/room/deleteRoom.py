@@ -1,7 +1,7 @@
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.events.RoomEvent import DeleteRoomEvent
-from src.modules.agenda.domain.entities.Room import Room
-from src.modules.agenda.aplication.ports.repository.RoomRepositoryPort import RoomRepositoryPort
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.events.RoomEvent import DeleteRoomEvent
+from src.modules.Agenda.Domain.Entities.Room import Room
+from src.modules.Agenda.Aplication.Ports.repository.RoomRepositoryPort import RoomRepositoryPort
 
 class DeleteRoomUseCase:
     def __init__(self, repository: RoomRepositoryPort, bus: BusPort):
@@ -23,3 +23,4 @@ class DeleteRoomUseCase:
             return False
         return False
        
+

@@ -23,3 +23,4 @@ class EventPublisher:
             message,
             routing_key=routing_key
         )
+

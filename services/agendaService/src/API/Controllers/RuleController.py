@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-from src.api.provider import (
+from src.API.provider import (
     get_create_block_rule_use_case,
     get_create_generic_rule_use_case,
     get_create_specific_day_rule_use_case,
@@ -10,14 +10,14 @@ from src.api.provider import (
     get_list_rules_query_use_case,
     get_rule_by_id_query_use_case,
 )
-from src.modules.agenda.aplication.dtos.useCase.command.RulesUseCasesDTO import (
+from src.modules.Agenda.Aplication.DTOs.useCase.command.RulesUseCasesDTO import (
     CreateBlockRuleCommand,
     CreateGenericRuleCommand,
     CreateSpecificDayRuleCommand,
     CreateSpecificRuleCommand,
     CreateWeekRuleCommand,
 )
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
 
 
 routerRule = APIRouter(prefix="/rules", tags=["Rules"])
@@ -68,3 +68,4 @@ async def create_week_rule(command: CreateWeekRuleCommand, use_case=Depends(get_
 @routerRule.delete("/{rule_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_rule(rule_id: str, use_case=Depends(get_delete_rule_use_case)):
     await use_case.execute(rule_id)
+

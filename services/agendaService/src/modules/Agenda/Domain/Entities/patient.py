@@ -1,6 +1,6 @@
 
 
-from src.modules.agenda.domain.valueObjects.Id import ID
+from src.modules.Agenda.Domain.ValueObjects.Id import ID
 
 
 class Patient:
@@ -24,3 +24,4 @@ class Patient:
     def destroy(self) -> bool:
         return True
  
+

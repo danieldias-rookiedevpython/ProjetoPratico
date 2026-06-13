@@ -17,3 +17,4 @@ class UpdateRoomCommand:
 @dataclass(frozen=True)
 class DeleteRoomCommand:
     id: str
+

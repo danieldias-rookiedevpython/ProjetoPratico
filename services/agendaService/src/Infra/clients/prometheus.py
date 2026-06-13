@@ -2,8 +2,8 @@ import json
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
-from src.infra.clients.base import ClientHealth
-from src.infra.config.settings import settings
+from src.Infra.clients.base import ClientHealth
+from src.Infra.config.settings import settings
 
 
 class PrometheusClient:
@@ -22,3 +22,4 @@ class PrometheusClient:
             return ClientHealth("prometheus", status == "success", metadata={"status": status})
         except Exception as exc:
             return ClientHealth("prometheus", False, str(exc))
+

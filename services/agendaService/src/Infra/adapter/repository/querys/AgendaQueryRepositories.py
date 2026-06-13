@@ -1,7 +1,7 @@
 from typing import Any
 
 from src.infra.adapter.repository.base import SQLiteRepository
-from src.modules.agenda.aplication.dtos.useCase.query import ListDaysQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import ListDaysQuery, ListQuery
 
 
 class BaseQueryRepository(SQLiteRepository):
@@ -88,3 +88,4 @@ class CalendarQueryRepository(SQLiteRepository):
             result = [self._load(row["data"]) for row in rows]
             await self._redis.set_json(cache_key, result)
             return result
+

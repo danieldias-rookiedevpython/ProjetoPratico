@@ -49,3 +49,4 @@ class CreateWeekRuleCommand:
 @dataclass(frozen=True)
 class DeleteRuleCommand:
     id: str
+

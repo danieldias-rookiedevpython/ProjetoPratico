@@ -1,8 +1,8 @@
-from src.modules.agenda.domain.entities.Room import Room
-from src.modules.agenda.domain.services import VerifyInRange
-from src.modules.agenda.domain.valueObjects import Date
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
-from src.modules.agenda.domain.valueObjects.EnumDay import DayStatus
+from src.modules.Agenda.Domain.Entities.Room import Room
+from src.modules.Agenda.Domain.services import VerifyInRange
+from src.modules.Agenda.Domain.ValueObjects import Date
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Domain.ValueObjects.EnumDay import DayStatus
 from ..rules.BaseRule import BaseRule
 
 class Day:
@@ -151,3 +151,4 @@ class Day:
         
     
     
+

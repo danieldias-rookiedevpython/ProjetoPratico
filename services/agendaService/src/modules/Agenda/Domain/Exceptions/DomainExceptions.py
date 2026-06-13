@@ -25,3 +25,4 @@ class InvalidIdComparisonException(AgendaDomainException):
 
 class EntityNotAvailableException(AgendaDomainException):
     code = "ENTITY_NOT_AVAILABLE"
+

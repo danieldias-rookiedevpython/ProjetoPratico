@@ -33,3 +33,4 @@ class CreateAppointmentTypeCommand:
     name: str
     duration: int
     description: str 
+

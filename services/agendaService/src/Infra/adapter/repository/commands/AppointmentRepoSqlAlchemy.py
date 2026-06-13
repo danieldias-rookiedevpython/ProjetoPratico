@@ -1,6 +1,6 @@
 
-from src.infra.adapter.repository.base import SQLiteRepository
-from src.modules.agenda.aplication.ports.repository.AppointmentRepositoryPort import AppointmentRepositoryPort
+from src.Infra.adapter.repository.base import SQLiteRepository
+from src.modules.Agenda.Aplication.Ports.repository.AppointmentRepositoryPort import AppointmentRepositoryPort
 
 
 class AppointmentRepository(SQLiteRepository, AppointmentRepositoryPort):
@@ -49,3 +49,4 @@ class AppointmentRepository(SQLiteRepository, AppointmentRepositoryPort):
 
     async def getAppointment(self, id: str):
         return await self.get(id)
+

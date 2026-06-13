@@ -1,8 +1,8 @@
 
-from src.modules.agenda.aplication.dtos.exceptions import DeleteUseCaseException
-from src.modules.agenda.aplication.events.RuleEvent import DeleteRuleEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository.RuleRepositoryPort import RuleRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.exceptions import DeleteUseCaseException
+from src.modules.Agenda.Aplication.events.RuleEvent import DeleteRuleEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository.RuleRepositoryPort import RuleRepositoryPort
 
 class DeleteRuleUseCase:
     def __init__(self, repository: RuleRepositoryPort, bus: BusPort):
@@ -25,3 +25,4 @@ class DeleteRuleUseCase:
         self._bus.emit(DeleteRuleEvent(rule_id))
 
         return True
+

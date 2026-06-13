@@ -6,3 +6,4 @@ class AppointmentType:
     name: str
     duration: int
     description: str
+

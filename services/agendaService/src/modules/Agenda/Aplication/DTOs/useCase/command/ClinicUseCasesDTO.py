@@ -17,3 +17,4 @@ class UpdateClinicCommand:
 @dataclass(frozen=True)
 class DeleteClinicCommand:
     id: str
+

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.infra.database import Database, database
+from src.Infra.database import Database, database
 
 
 class MigrationRunner:
@@ -31,3 +31,4 @@ class MigrationRunner:
                     "INSERT INTO schema_migrations (version) VALUES (?)",
                     (version,),
                 )
+

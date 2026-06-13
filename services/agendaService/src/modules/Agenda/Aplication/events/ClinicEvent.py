@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.modules.agenda.domain.entities import Clinic
+from src.modules.Agenda.Domain.Entities import Clinic
 
 
 @dataclass(frozen=True)
@@ -16,3 +16,4 @@ class UpdateClinicEvent:
 @dataclass(frozen=True)
 class DeleteClinicEvent:
     clinic_id: str
+

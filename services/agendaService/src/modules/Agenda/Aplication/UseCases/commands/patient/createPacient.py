@@ -1,9 +1,9 @@
 
-from src.modules.agenda.aplication.events.PatientEvent import CreatePatientEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import PatientRepositoryPort
-from src.modules.agenda.aplication.dtos.useCase.command.PatientUseCasesDTO import CreatePatientCommand
-from src.modules.agenda.domain.entities.Patient import Patient
+from src.modules.Agenda.Aplication.events.PatientEvent import CreatePatientEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import PatientRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.useCase.command.PatientUseCasesDTO import CreatePatientCommand
+from src.modules.Agenda.Domain.Entities.Patient import Patient
 
 
 class CreatePatientUseCase:
@@ -23,3 +23,4 @@ class CreatePatientUseCase:
             
        except Exception as e:
             return False
+

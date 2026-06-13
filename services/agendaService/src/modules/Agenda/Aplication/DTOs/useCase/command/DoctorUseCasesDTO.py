@@ -18,3 +18,4 @@ class UpdateDoctorCommand:
 @dataclass(frozen=True)
 class DeleteDoctorCommand:
     id: str
+

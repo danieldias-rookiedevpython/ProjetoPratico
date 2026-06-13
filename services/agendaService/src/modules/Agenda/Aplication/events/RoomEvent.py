@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.modules.agenda.domain.entities import Room
+from src.modules.Agenda.Domain.Entities import Room
 
 
 @dataclass(frozen=True)
@@ -16,3 +16,4 @@ class UpdateRoomEvent:
 @dataclass(frozen=True)
 class DeleteRoomEvent:
     room_id: str
+

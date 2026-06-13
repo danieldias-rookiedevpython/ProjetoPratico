@@ -1,9 +1,9 @@
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.dtos.useCase.command.RulesUseCasesDTO import CreateBlockRuleCommand
-from src.modules.agenda.aplication.events.RuleEvent import CreateBlockRuleEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import RuleRepositoryPort
-from src.modules.agenda.domain.rules.BlockRule import BlockRule
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.DTOs.useCase.command.RulesUseCasesDTO import CreateBlockRuleCommand
+from src.modules.Agenda.Aplication.events.RuleEvent import CreateBlockRuleEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import RuleRepositoryPort
+from src.modules.Agenda.Domain.rules.BlockRule import BlockRule
 
 
 class CreateBlockRuleUseCase:
@@ -32,3 +32,4 @@ class CreateBlockRuleUseCase:
                 context={"command": str(command)},
                 original=e,
             ) from e
+

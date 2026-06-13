@@ -1,7 +1,7 @@
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
-from src.infra.config.settings import settings
+from src.Infra.config.settings import settings
 
 
 def _mask_url(value: str) -> str:
@@ -56,3 +56,4 @@ class InfraHealthHandler:
                 },
             ],
         }
+

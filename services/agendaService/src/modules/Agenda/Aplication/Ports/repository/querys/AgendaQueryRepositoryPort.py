@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from src.modules.agenda.aplication.dtos.useCase.query import ListDaysQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import ListDaysQuery, ListQuery
 
 
 class EntityQueryRepositoryPort(ABC):
@@ -46,3 +46,4 @@ class CalendarQueryRepositoryPort(ABC):
     @abstractmethod
     async def list(self, query: ListDaysQuery) -> list[Any]:
         pass
+

@@ -2,12 +2,12 @@
 
 
 
-from src.modules.agenda.aplication.dtos.useCase.command.ClinicUseCasesDTO import CreateClinicCommand
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
-from src.modules.agenda.aplication.events.ClinicEvent import CreateClinicEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import ClinicRepositoryPort
-from src.modules.agenda.domain.entities import Clinic
+from src.modules.Agenda.Aplication.DTOs.useCase.command.ClinicUseCasesDTO import CreateClinicCommand
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.events.ClinicEvent import CreateClinicEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import ClinicRepositoryPort
+from src.modules.Agenda.Domain.Entities import Clinic
 
 
 class CreateClinicUseCase:
@@ -31,3 +31,4 @@ class CreateClinicUseCase:
                 original=e,
             ) from e
         return True
+

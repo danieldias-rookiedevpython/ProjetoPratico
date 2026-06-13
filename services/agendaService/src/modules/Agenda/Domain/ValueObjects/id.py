@@ -1,5 +1,5 @@
 import uuid
-from src.modules.agenda.domain.exceptions import InvalidIdComparisonException
+from src.modules.Agenda.Domain.Exceptions import InvalidIdComparisonException
 
 class ID:
 
@@ -25,3 +25,4 @@ class ID:
                 "Invalid ID type for comparison",
                 {"other_id_type": type(other_id).__name__},
             )
+

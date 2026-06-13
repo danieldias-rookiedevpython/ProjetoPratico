@@ -1,7 +1,7 @@
 from calendar import monthrange
 from datetime import date
 
-from src.modules.agenda.domain.valueObjects import Date, DayStatus
+from src.modules.Agenda.Domain.ValueObjects import Date, DayStatus
 
 
 class CalendarDataClient:
@@ -23,3 +23,4 @@ class CalendarDataClient:
             }
             for day in range(1, total_days + 1)
         ]
+

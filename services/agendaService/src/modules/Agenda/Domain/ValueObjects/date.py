@@ -18,3 +18,4 @@ class Date:
     
     def inRange(self, start, end):
         return self.day >= start.day and self.month >= start.month and self.year >= start.year and self.day <= end.day and self.month <= end.month and self.year <= end.year
+

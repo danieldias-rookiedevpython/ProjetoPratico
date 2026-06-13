@@ -10,3 +10,4 @@ class DayStatus(Enum):
     BLOCKED = "BLOCKED"
     HOLIDAY = "HOLIDAY"
     
+

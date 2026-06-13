@@ -1,7 +1,17 @@
 import sys
+import types
 
-from . import infra as _infra
-sys.modules[f"{__name__}.Infra"] = _infra
+infra_alias = types.ModuleType("src.infra")
+infra_alias.__path__ = []
+sys.modules["src.infra"] = infra_alias
 
-from . import api as _api
-sys.modules[f"{__name__}.API"] = _api
+from . import Infra as _infra
+
+sys.modules["src.infra"] = _infra
+sys.modules["src.Infra"] = _infra
+
+from . import API as _api
+
+sys.modules["src.api"] = _api
+sys.modules["src.API"] = _api
+

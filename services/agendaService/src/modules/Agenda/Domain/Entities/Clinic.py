@@ -1,6 +1,6 @@
 #abstração de um user admin que criará regras para a agenda, é importante que as policies sejam armazenadas aqui para manter a estrutura que o usuario criou
 #isso pois as regras serão otimizadas para eliminar redundancias e facilitar os cálculos de agendamentos
-from src.modules.agenda.domain.valueObjects.Id import ID
+from src.modules.Agenda.Domain.ValueObjects.Id import ID
 
 from ..rules.BaseRule import BaseRule
 
@@ -45,3 +45,4 @@ class Clinic:
     @property
     def name(self) -> str:
         return self._name
+

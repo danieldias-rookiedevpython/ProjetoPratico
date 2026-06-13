@@ -31,3 +31,4 @@ class InMemoryEventBus:
     def on(self, event: Any, callback: Callable[..., Any]):
         self._subscribers[event].append(callback)
         return AwaitableResult(True)
+

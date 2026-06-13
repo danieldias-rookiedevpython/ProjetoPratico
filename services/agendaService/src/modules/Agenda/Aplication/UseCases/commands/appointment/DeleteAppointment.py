@@ -1,10 +1,10 @@
 
 
-from src.modules.agenda.aplication.dtos.useCase.command.AppointmentUseCasesDTO import DeleteAppointmentCommand
-from src.modules.agenda.aplication.dtos.exceptions import DeleteUseCaseException
-from src.modules.agenda.aplication.events.AppointmentEvent import DeleteAppointmentEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import AppointmentRepositoryPort
+from src.modules.Agenda.Aplication.DTOs.useCase.command.AppointmentUseCasesDTO import DeleteAppointmentCommand
+from src.modules.Agenda.Aplication.DTOs.exceptions import DeleteUseCaseException
+from src.modules.Agenda.Aplication.events.AppointmentEvent import DeleteAppointmentEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import AppointmentRepositoryPort
 
 
 class DeleteAppointmentUseCase:
@@ -25,3 +25,4 @@ class DeleteAppointmentUseCase:
                 context={"appointment_id": command.id},
                 original=e,
             ) from e
+

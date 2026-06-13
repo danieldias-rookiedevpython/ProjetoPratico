@@ -1,6 +1,6 @@
-from src.modules.agenda.domain.valueObjects.Date import Date
-from src.modules.agenda.domain.rules.RuleEnum import RuleEffect, TargetType
-from src.modules.agenda.domain.rules.BaseRule import BaseRule
+from src.modules.Agenda.Domain.ValueObjects.Date import Date
+from src.modules.Agenda.Domain.rules.RuleEnum import RuleEffect, TargetType
+from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
 
 
 class BlockRule(BaseRule):
@@ -27,3 +27,4 @@ class BlockRule(BaseRule):
            
         
     
+

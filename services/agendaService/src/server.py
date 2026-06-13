@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from src.api.router import api_router
-from src.infra.clients import DatadogClient
+from src.API.router import api_router
+from src.Infra.clients import DatadogClient
 
 
 DatadogClient().configure()
@@ -20,3 +20,4 @@ def main():
     import uvicorn
 
     uvicorn.run("src.server:app", host="127.0.0.1", port=8000, reload=True)
+

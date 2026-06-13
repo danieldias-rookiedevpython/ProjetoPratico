@@ -1,7 +1,7 @@
 from typing import Any
 
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListDaysQuery, ListQuery
-from src.modules.agenda.aplication.ports.repository.querys import (
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListDaysQuery, ListQuery
+from src.modules.Agenda.Aplication.Ports.repository.querys import (
     AppointmentQueryRepositoryPort,
     CalendarQueryRepositoryPort,
     ClinicQueryRepositoryPort,
@@ -103,3 +103,4 @@ class ListDaysUseCase:
 
     async def execute(self, query: ListDaysQuery | None = None) -> list[Any]:
         return await self._repository.list(query or ListDaysQuery())
+

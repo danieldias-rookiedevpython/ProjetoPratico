@@ -3,9 +3,9 @@
 
 
 
-from src.modules.agenda.aplication.events.PatientEvent import DeletePatientEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import PatientRepositoryPort
+from src.modules.Agenda.Aplication.events.PatientEvent import DeletePatientEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import PatientRepositoryPort
 
 
 class DeletePatientUseCase:
@@ -26,3 +26,4 @@ class DeletePatientUseCase:
             
         except Exception as e:
             return False
+

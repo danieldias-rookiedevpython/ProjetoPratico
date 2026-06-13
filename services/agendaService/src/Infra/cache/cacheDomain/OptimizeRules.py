@@ -1,6 +1,6 @@
-from src.modules.agenda.domain.rules.BaseRule import BaseRule
-from src.modules.agenda.domain.rules.RuleEnum import RuleEffect
-from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
+from src.modules.Agenda.Domain.rules.RuleEnum import RuleEffect
+from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
 
 class OptimizeRules:
     def __init__(self):
@@ -51,3 +51,4 @@ class OptimizeRules:
     @property
     def rules(self):
             return self._rules
+

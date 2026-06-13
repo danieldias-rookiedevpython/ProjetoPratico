@@ -8,3 +8,4 @@ class ResponseCreateCalendarDTO():
     clinic_id: int
     doctor_id: int
     room_id: int
+

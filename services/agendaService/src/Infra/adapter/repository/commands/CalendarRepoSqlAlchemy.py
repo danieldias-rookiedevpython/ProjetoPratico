@@ -1,5 +1,5 @@
-from src.infra.adapter.repository.base import SQLiteRepository
-from src.modules.agenda.domain.entities import Day
+from src.Infra.adapter.repository.base import SQLiteRepository
+from src.modules.Agenda.Domain.Entities import Day
 
 
 class CalendarRepository(SQLiteRepository):
@@ -48,3 +48,4 @@ class CalendarRepository(SQLiteRepository):
             else:
                 connection.execute("DELETE FROM days WHERE year = ?", (int(ano),))
         await self._redis.delete_pattern(self._list_cache_key("days", "*"))
+

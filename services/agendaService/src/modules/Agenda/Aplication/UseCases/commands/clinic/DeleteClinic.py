@@ -1,8 +1,8 @@
 
 
-from src.modules.agenda.aplication.events.ClinicEvent import DeleteClinicEvent
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import ClinicRepositoryPort
+from src.modules.Agenda.Aplication.events.ClinicEvent import DeleteClinicEvent
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import ClinicRepositoryPort
 
 
 class DeleteClinicUseCase:
@@ -16,3 +16,4 @@ class DeleteClinicUseCase:
             self._bus.emit(DeleteClinicEvent(str(clinic.id if hasattr(clinic, "id") else clinic)))
             return True
         return False
+

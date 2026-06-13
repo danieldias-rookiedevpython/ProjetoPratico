@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.api.provider import (
+from src.API.provider import (
     get_create_doctor_use_case,
     get_delete_doctor_use_case,
     get_doctor_by_id_query_use_case,
     get_list_doctors_query_use_case,
     get_update_doctor_use_case,
 )
-from src.modules.agenda.aplication.dtos.useCase.command.DoctorUseCasesDTO import (
+from src.modules.Agenda.Aplication.DTOs.useCase.command.DoctorUseCasesDTO import (
     CreateDoctorCommand,
     UpdateDoctorCommand,
 )
-from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
 
 
 routerDoctor = APIRouter(prefix="/doctors", tags=["Doctors"])
@@ -53,3 +53,4 @@ async def update_doctor(
 @routerDoctor.delete("/{doctor_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_doctor(doctor_id: str, use_case=Depends(get_delete_doctor_use_case)):
     await use_case.execute(doctor_id)
+

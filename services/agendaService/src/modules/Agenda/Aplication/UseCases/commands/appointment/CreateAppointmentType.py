@@ -1,8 +1,8 @@
-from src.modules.agenda.aplication.ports.events.BusPort import BusPort
-from src.modules.agenda.aplication.ports.repository import AppointmentRepositoryPort
-from src.modules.agenda.domain.valueObjects import AppointmentType
-from src.modules.agenda.aplication.dtos.useCase.command.AppointmentUseCasesDTO import CreateAppointmentTypeCommand
-from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
+from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
+from src.modules.Agenda.Aplication.Ports.repository import AppointmentRepositoryPort
+from src.modules.Agenda.Domain.ValueObjects import AppointmentType
+from src.modules.Agenda.Aplication.DTOs.useCase.command.AppointmentUseCasesDTO import CreateAppointmentTypeCommand
+from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
 
 class CreateAppointmentTypeUseCase:
     def __init__(self, repository: AppointmentRepositoryPort, bus: BusPort ):
@@ -28,3 +28,4 @@ class CreateAppointmentTypeUseCase:
             use_case=self.__class__.__name__,
             context={"command": command.model_dump() if hasattr(command, "model_dump") else str(command)},
          )
+

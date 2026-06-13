@@ -50,3 +50,4 @@ class DeleteUseCaseException(AgendaUseCaseException):
 
 class EntityNotFoundUseCaseException(AgendaUseCaseException):
     pass
+

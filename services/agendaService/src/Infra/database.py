@@ -1,8 +1,7 @@
 import sqlite3
 from contextlib import contextmanager
 
-from src.infra.config.db.database import get_sqlite_path
-
+from src.Infra.config.db.database import get_sqlite_path
 
 class Database:
     def __init__(self, database_url: str | None = None):
@@ -24,3 +23,4 @@ class Database:
 
 
 database = Database()
+

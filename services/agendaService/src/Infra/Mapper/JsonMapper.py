@@ -26,3 +26,4 @@ def to_primitive(value):
             data[clean_key] = to_primitive(item)
         return data
     return str(value)
+

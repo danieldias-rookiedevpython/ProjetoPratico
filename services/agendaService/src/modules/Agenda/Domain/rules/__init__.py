@@ -16,3 +16,4 @@ __all__ = [
     "TargetType",
     "WeekRule",
 ]
+
