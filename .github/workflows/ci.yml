@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+
+  backend-ci:
+
+    name: Backend - Build e Testes
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Instalar Poetry
+        run: pip install poetry
+
+      - name: Instalar dependências
+        run: poetry install
+
+      - name: Ruff
+        run: poetry run ruff check .
+
+      - name: MyPy
+        run: poetry run mypy src
+
+      - name: Testes + Cobertura
+        run: |
+          poetry run pytest \
+            --cov=src \
+            --cov-report=xml \
+            --cov-report=term
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
+
+  docker-build:
+
+    name: Docker - Build
+
+    runs-on: ubuntu-latest
+
+    needs: backend-ci
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t agenda-service:test .
+
+  sonar-analysis:
+
+    name: SonarCloud - Quality Gate
+
+    runs-on: ubuntu-latest
+
+    needs:
+      - backend-ci
+
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - run: pip install poetry
+
+      - run: poetry install
+
+      - run: |
+          poetry run pytest \
+            --cov=src \
+            --cov-report=xml
+
+      - uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - uses: SonarSource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
