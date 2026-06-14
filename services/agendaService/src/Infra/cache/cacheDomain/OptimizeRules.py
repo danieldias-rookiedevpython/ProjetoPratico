@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from src.modules.Agenda.Domain.rules.BaseRule import BaseRule
 from src.modules.Agenda.Domain.rules.RuleEnum import RuleEffect
 from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
@@ -52,3 +53,8 @@ class OptimizeRules:
     def rules(self):
             return self._rules
 
+=======
+from src.infra.cache.OptimizeRules import OptimizeRules
+
+__all__ = ["OptimizeRules"]
+>>>>>>> example

@@ -7,10 +7,12 @@ from dataclasses import dataclass
 class CreateDoctorCommand:
     id_extern: str
     name: str
+    triggered_by_id: str | None = None
 
 @dataclass(frozen=True)
 class UpdateDoctorCommand:
     id: str
+    triggered_by_id: str | None = None
     name: str | None = None
     availability: bool | None = None
     rules: list | None = None
@@ -18,4 +20,8 @@ class UpdateDoctorCommand:
 @dataclass(frozen=True)
 class DeleteDoctorCommand:
     id: str
+<<<<<<< HEAD
 
+=======
+    triggered_by_id: str | None = None
+>>>>>>> example

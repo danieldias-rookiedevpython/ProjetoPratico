@@ -1,19 +1,24 @@
 
+<<<<<<< HEAD
 from src.Infra.adapter.repository.base import SQLiteRepository
 from src.modules.Agenda.Aplication.Ports.repository.AppointmentRepositoryPort import AppointmentRepositoryPort
+=======
+from src.infra.adapter.repository.base import SQLiteRepository
+from src.infra.mapper.DomainMapper import AppointmentMapper
+from src.modules.agenda.aplication.ports.repository.AppointmentRepositoryPort import AppointmentRepositoryPort
+>>>>>>> example
 
 
 class AppointmentRepository(SQLiteRepository, AppointmentRepositoryPort):
     async def save(self, appointment, scheduler_id: str | None = None) -> None:
         appointment_id = self._entity_id(appointment)
-        data = self._load(self._dump(appointment))
         with self._db.connect() as connection:
             connection.execute(
                 """
                 INSERT INTO appointments (
                     id, scheduler_id, patient_id, doctor_id, room_id, date_id, status, data, updated_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?::jsonb, CURRENT_TIMESTAMP)
                 ON CONFLICT(id) DO UPDATE SET
                     scheduler_id = excluded.scheduler_id,
                     patient_id = excluded.patient_id,
@@ -27,15 +32,16 @@ class AppointmentRepository(SQLiteRepository, AppointmentRepositoryPort):
                 (
                     appointment_id,
                     scheduler_id,
-                    str(data.get("patient_id") or data.get("patient") or ""),
-                    str(data.get("doctor_id") or data.get("doctor") or ""),
-                    str(data.get("room_id") or data.get("room") or ""),
-                    data.get("date_id"),
-                    str(data.get("status") or "AVAILABLE"),
+                    str(appointment.patient_id),
+                    str(appointment.doctor_id),
+                    str(appointment.room_id),
+                    appointment.date,
+                    str(getattr(appointment.status, "value", appointment.status)),
                     self._dump(appointment),
                 ),
             )
         await self._cache_entity("appointments", appointment_id, appointment)
+        await self._invalidate_appointment_read_models()
 
     async def update(self, appointment) -> None:
         await self.save(appointment)
@@ -43,10 +49,34 @@ class AppointmentRepository(SQLiteRepository, AppointmentRepositoryPort):
     async def delete(self, appointment_id: str) -> None:
         self._delete_by_id("appointments", appointment_id)
         await self._invalidate_entity("appointments", appointment_id)
+        await self._invalidate_appointment_read_models()
 
     async def get(self, appointment_id: str):
-        return await self._fetch_json_cached("appointments", appointment_id)
+        return AppointmentMapper.toDomain(await self._fetch_json_cached("appointments", appointment_id))
 
     async def getAppointment(self, id: str):
         return await self.get(id)
 
+<<<<<<< HEAD
+=======
+    async def saveType(self, appointment_type) -> None:
+        type_id = str(appointment_type.name)
+        with self._db.connect() as connection:
+            connection.execute(
+                """
+                INSERT INTO appointment_types (id, name, data, updated_at)
+                VALUES (?, ?, ?::jsonb, CURRENT_TIMESTAMP)
+                ON CONFLICT(id) DO UPDATE SET
+                    name = excluded.name,
+                    data = excluded.data,
+                    updated_at = CURRENT_TIMESTAMP
+                """,
+                (type_id, appointment_type.name, self._dump(appointment_type)),
+            )
+        await self._cache_entity("appointment_types", type_id, appointment_type)
+
+    async def _invalidate_appointment_read_models(self) -> None:
+        await self._redis.delete_pattern(self._list_cache_key("appointments", "*"))
+        await self._redis.delete_pattern(self._list_cache_key("rooms", "admin*"))
+        await self._redis.delete_pattern("agenda:rooms:id:*:admin-detail")
+>>>>>>> example

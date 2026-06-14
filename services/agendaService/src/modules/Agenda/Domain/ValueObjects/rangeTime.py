@@ -78,11 +78,20 @@ class RangeTime:
             self.end_time == end_obj
         )
 
-    def overlaps(self, start_time: str | time, end_time: str | time):
-        start = self._validate_time(start_time)
-        end = self._validate_time(end_time)
+    def overlaps(self, start_time: str | time | 'RangeTime', end_time: str | time | None = None):
+        if isinstance(start_time, RangeTime):
+            start = start_time.start_time
+            end = start_time.end_time
+        else:
+            if end_time is None:
+                raise MissingTimeBoundaryException(
+                    "end_time is required when checking overlap with raw time values",
+                    {"start_time": start_time},
+                )
+            start = self._validate_time(start_time)
+            end = self._validate_time(end_time)
 
-        return start < self.end_time and end > self.start_time
+        return ((start <= self.end_time and start>= self.start_time) or (end >= self.start_time and end  <= self.end_time)) 
            
 
         
@@ -103,44 +112,14 @@ class RangeTime:
         return value.strftime(RangeTime.TIME_PATTERN)
 
     @staticmethod
-    def fusion( other: 'RangeTime', other2: 'RangeTime') ->'RangeTime' | None:
-        
-             
-        timeInit1 = other.start_time
-        timeEnd1 = other.end_time
-        
-        timeInit2 = other2.start_time
-        timeEnd2 = other2.end_time
-            
-            
-     
-        if((timeInit1<=timeInit2 and timeInit1<timeEnd2)and(timeEnd1<timeInit2 and timeEnd1<timeEnd2))or((timeInit2<timeInit1 and timeInit2<timeEnd1)and(timeEnd2<timeInit1 and timeEnd2<timeEnd1)):
+    def fusion( other: 'RangeTime', other2: 'RangeTime') -> RangeTime | None:
+        if other.end_time < other2.start_time or other2.end_time < other.start_time:
             return None
-     
-     
-        if other2.overlaps(other.start_time, other.end_time):
-           return other2
-        
-        if other.overlaps(other2.start_time, other2.end_time):
-            return other
-           
-            
-        timeInit1 = other.start_time
-        timeEnd1 = other.end_time
-        
-        timeInit2 = other2.start_time
-        timeEnd2 = other2.end_time
-            
-            
-        
-        if (timeInit1 == timeInit2 and timeEnd1 == timeEnd2):
-            return RangeTime(other.start_time, other.end_time)
-        
-        
-        start_time = min( other.start_time, other2.start_time)
-        end_time = max(other.end_time, other.end_time, other2.end_time)
-        
-        return RangeTime(start_time, end_time)
+
+        return RangeTime(
+            min(other.start_time, other2.start_time),
+            max(other.end_time, other2.end_time),
+        )
     
     
     

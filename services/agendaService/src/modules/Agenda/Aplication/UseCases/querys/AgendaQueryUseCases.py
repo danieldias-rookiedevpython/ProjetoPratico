@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from typing import Any
 
 from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListDaysQuery, ListQuery
@@ -10,8 +11,34 @@ from src.modules.Agenda.Aplication.Ports.repository.querys import (
     PatientQueryRepositoryPort,
     RoomQueryRepositoryPort,
     RuleQueryRepositoryPort,
+=======
+from .appointment import (
+    GetAppointmentByIdUseCase,
+    GetAppointmentTypeByIdUseCase,
+    ListAppointmentTypesUseCase,
+    ListAppointmentsByDoctorUseCase,
+    ListAppointmentsByPatientUseCase,
+    ListAppointmentsUseCase,
+>>>>>>> example
 )
+from .calendar import GetDayByIdUseCase, ListDaysUseCase, ListMonthDaysForFrontUseCase
+from .entities import (
+    GetClinicByIdUseCase,
+    GetDoctorByIdUseCase,
+    GetPatientByIdUseCase,
+    ListClinicsUseCase,
+    ListDoctorsUseCase,
+    ListPatientsUseCase,
+)
+from .room import (
+    GetRoomAdminDetailUseCase,
+    GetRoomByIdUseCase,
+    ListRoomsAdminDetailedUseCase,
+    ListRoomsUseCase,
+)
+from .rules import GetRuleByIdUseCase, GetRulesAdminContextUseCase, ListRulesUseCase
 
+<<<<<<< HEAD
 
 class GetEntityByIdUseCase:
     def __init__(self, repository: EntityQueryRepositoryPort):
@@ -104,3 +131,29 @@ class ListDaysUseCase:
     async def execute(self, query: ListDaysQuery | None = None) -> list[Any]:
         return await self._repository.list(query or ListDaysQuery())
 
+=======
+__all__ = [
+    "GetAppointmentByIdUseCase",
+    "GetAppointmentTypeByIdUseCase",
+    "GetClinicByIdUseCase",
+    "GetDayByIdUseCase",
+    "GetDoctorByIdUseCase",
+    "GetPatientByIdUseCase",
+    "GetRoomAdminDetailUseCase",
+    "GetRoomByIdUseCase",
+    "GetRuleByIdUseCase",
+    "GetRulesAdminContextUseCase",
+    "ListAppointmentTypesUseCase",
+    "ListAppointmentsByDoctorUseCase",
+    "ListAppointmentsByPatientUseCase",
+    "ListAppointmentsUseCase",
+    "ListClinicsUseCase",
+    "ListDaysUseCase",
+    "ListDoctorsUseCase",
+    "ListMonthDaysForFrontUseCase",
+    "ListPatientsUseCase",
+    "ListRoomsAdminDetailedUseCase",
+    "ListRoomsUseCase",
+    "ListRulesUseCase",
+]
+>>>>>>> example

@@ -20,6 +20,8 @@ class BaseRule(ABC):
         weekday: int | None = None,
         target: str | None = None,
         targetType: TargetType | None = None,
+        targetId: str | None = None,
+        type: TargetType | None = None,
         nome: str | None = None
 
       ):
@@ -31,8 +33,10 @@ class BaseRule(ABC):
         self._date = date
         self._weekday = weekday
         self._ruleEffect = ruleEffect
-        self._target = target
-        self._targetType = targetType
+        self._target = target if target is not None else targetId
+        self._targetType = targetType if targetType is not None else type
+        self._targetId = self._target
+        self._type = self._targetType
         self._nome = nome
     
     
@@ -45,6 +49,10 @@ class BaseRule(ABC):
     @property
     def rangeTime(self) -> RangeTime | None:
         return self._rangeTime
+
+    @rangeTime.setter
+    def rangeTime(self, value: RangeTime | None) -> None:
+        self._rangeTime = value
     
     @property
     def description(self) -> str | None:
@@ -79,6 +87,10 @@ class BaseRule(ABC):
         return self._target
 
     @property
+    def targetId(self) -> str | None:
+        return self._targetId
+
+    @property
     def id(self):
         return self._id
 
@@ -87,6 +99,16 @@ class BaseRule(ABC):
         return self._targetType
 
     @property
+    def type(self) -> TargetType | None:
+        return self._type
+
+    @property
     def nome(self) -> str | None:
         return self._nome
 
+<<<<<<< HEAD
+=======
+    @property
+    def day(self) -> int | None:
+        return self._date.getDay if self._date else None
+>>>>>>> example

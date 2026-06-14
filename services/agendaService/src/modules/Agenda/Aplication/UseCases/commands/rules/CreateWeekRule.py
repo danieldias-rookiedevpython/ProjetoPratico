@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
 from src.modules.Agenda.Aplication.DTOs.useCase.command.RulesUseCasesDTO import CreateWeekRuleCommand
 from src.modules.Agenda.Aplication.events.RuleEvent import CreateWeekRuleEvent
@@ -5,6 +6,16 @@ from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
 from src.modules.Agenda.Aplication.Ports.repository import RuleRepositoryPort
 from src.modules.Agenda.Domain.rules import RuleEffect, TargetType, WeekRule
 from src.modules.Agenda.Domain.ValueObjects.RangeTime import RangeTime
+=======
+from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
+from src.modules.agenda.aplication.dtos.useCase.command.RulesUseCasesDTO import CreateWeekRuleCommand
+from src.modules.agenda.aplication.dtos.useCase.output import UseCaseOutputDTO
+from src.modules.agenda.aplication.events.RuleEvent import CreateWeekRuleEvent
+from src.modules.agenda.aplication.ports.events.BusPort import BusPort
+from src.modules.agenda.aplication.ports.repository import RuleRepositoryPort
+from src.modules.agenda.domain.rules import RuleEffect, TargetType, WeekRule
+from src.modules.agenda.domain.valueObjects.RangeTime import RangeTime
+>>>>>>> example
 
 
 class CreateWeekRuleUseCase:
@@ -12,7 +23,7 @@ class CreateWeekRuleUseCase:
         self._repository = repository
         self._bus = bus
 
-    async def execute(self, command: CreateWeekRuleCommand) -> bool:
+    async def execute(self, command: CreateWeekRuleCommand) -> UseCaseOutputDTO:
         try:
             rule = WeekRule(
                 ruleEffect=_effect(command.ruleEffect),
@@ -24,33 +35,69 @@ class CreateWeekRuleUseCase:
                 nome=command.nome,
             )
             await self._repository.save(rule)
-            self._bus.emit(CreateWeekRuleEvent(rule))
-            return True
+            event = CreateWeekRuleEvent.from_entity(rule, triggered_by_id=command.triggered_by_id)
+            await self._bus.emit(event)
+            return UseCaseOutputDTO.ok(
+                use_case=self.__class__.__name__,
+                action="created",
+                resource="week_rule",
+                resource_id=str(rule.id),
+                triggered_by_id=command.triggered_by_id,
+                event_name=event.EVENT_NAME,
+            )
         except Exception as e:
             raise CreateUseCaseException(
                 code="CREATE_WEEK_RULE_ERROR",
                 message="Error creating week rule",
                 use_case=self.__class__.__name__,
-                context={"command": str(command)},
+                context={"command": str(command), "original_error": str(e)},
                 original=e,
             ) from e
 
 
 def _effect(value: object) -> RuleEffect:
-    return value if isinstance(value, RuleEffect) else RuleEffect[str(value).upper()]
+    if isinstance(value, RuleEffect):
+        return value
+    return RuleEffect[_effect_key(value)]
 
 
 def _target_type(value: object) -> TargetType | None:
     if value is None or isinstance(value, TargetType):
         return value
-    return TargetType[str(value).upper()]
+    key = _enum_key(value)
+    if key in {"", "NULL", "NONE"}:
+        return None
+    return TargetType[key]
 
 
 def _range(value: object) -> RangeTime:
     if isinstance(value, RangeTime):
         return value
     if isinstance(value, dict):
-        return RangeTime(str(value["start_time"]), str(value["end_time"]))
+        start = value.get("start_time") or value.get("start")
+        end = value.get("end_time") or value.get("end")
+        return RangeTime(str(start), str(end))
     start, end = str(value).split("-", 1)
     return RangeTime(start.strip(), end.strip())
 
+<<<<<<< HEAD
+=======
+
+def _enum_key(value: object) -> str:
+    text = str(value).strip()
+    if "." in text:
+        text = text.rsplit(".", 1)[-1]
+    return text.upper()
+
+
+def _effect_key(value: object) -> str:
+    aliases = {
+        "ALLOW": "ADD",
+        "AVAILABLE": "ADD",
+        "DENY": "REMOVE",
+        "DISALLOW": "REMOVE",
+        "UNAVAILABLE": "REMOVE",
+    }
+    key = _enum_key(value)
+    return aliases.get(key, key)
+>>>>>>> example

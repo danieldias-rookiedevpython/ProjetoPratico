@@ -7,19 +7,24 @@ from src.API.provider import (
     get_patient_repository,
     get_list_patients_query_use_case,
 )
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.useCase.command.PatientUseCasesDTO import (
     CreatePatientCommand,
     UpdatePatientCommand,
 )
 from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
+=======
+from src.api.interfaces.patient import CreatePatientRequest, UpdatePatientRequest
+from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+>>>>>>> example
 
 
 routerPatient = APIRouter(prefix="/patients", tags=["Patients"])
 
 
-@routerPatient.post("/", status_code=status.HTTP_201_CREATED)
-async def create_patient(command: CreatePatientCommand, use_case=Depends(get_create_patient_use_case)):
-    result = await use_case.execute(command)
+@routerPatient.post("/", status_code=status.HTTP_201_CREATED, include_in_schema=False)
+async def create_patient(request: CreatePatientRequest, use_case=Depends(get_create_patient_use_case)):
+    result = await use_case.execute(request.to_command())
     return {"created": result}
 
 
@@ -43,14 +48,14 @@ async def list_patients(
 @routerPatient.put("/{patient_id}")
 async def update_patient(
     patient_id: str,
-    command: UpdatePatientCommand,
+    request: UpdatePatientRequest,
     repository=Depends(get_patient_repository),
     query_use_case=Depends(get_patient_by_id_query_use_case),
 ):
     patient = await query_use_case.execute(GetByIdQuery(id=patient_id))
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
-    await repository.update(command)
+    await repository.update(request.to_command(patient_id))
     return {"updated": True}
 
 

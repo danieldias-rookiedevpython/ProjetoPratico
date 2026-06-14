@@ -19,6 +19,9 @@ services:
       USER_PATIENT_DELETED_ROUTING_KEY: ${USER_PATIENT_DELETED_ROUTING_KEY:-users.patient.deleted}
       AGENDA_REDIS_URL: ${AGENDA_REDIS_URL:-redis://agenda-redis:6379/0}
       AGENDA_CLIENT_TIMEOUT_SECONDS: ${AGENDA_CLIENT_TIMEOUT_SECONDS:-3}
+      AGENDA_EVENT_BROKER_BUFFER_MAX_SIZE: ${AGENDA_EVENT_BROKER_BUFFER_MAX_SIZE:-1000}
+      AGENDA_EVENT_BROKER_RETRY_INTERVAL_SECONDS: ${AGENDA_EVENT_BROKER_RETRY_INTERVAL_SECONDS:-5}
+      AGENDA_EVENT_BROKER_RETRY_BATCH_SIZE: ${AGENDA_EVENT_BROKER_RETRY_BATCH_SIZE:-50}
       PROMETHEUS_URL: ${PROMETHEUS_URL:-http://prometheus:9090}
       DD_SERVICE: ${DD_SERVICE:-agenda-service}
       DD_ENV: ${DD_ENV:-development}
@@ -32,14 +35,24 @@ services:
       - "traefik.http.routers.agenda-service.entrypoints=web"
       - "traefik.http.routers.agenda-service.middlewares=auth@file"
       - "traefik.http.services.agenda-service.loadbalancer.server.port=8000"
-      - "traefik.docker.network=web"
+      - "traefik.docker.network=internal"
     ports:
       - "${AGENDA_PORT:-8001}:8000"
     depends_on:
-      - agenda-postgres
-      - agenda-redis
+      agenda-postgres:
+        condition: service_healthy
+      agenda-redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/agenda/infra/health', timeout=3).read()\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     networks:
-      - web
+      - internal
       - agenda-net
 
   agenda-postgres:
@@ -53,6 +66,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+      start_period: 10s
     volumes:
       - agenda-postgres-data:/var/lib/postgresql/data
     networks:
@@ -63,14 +77,19 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "${AGENDA_REDIS_PORT:-6381}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
     volumes:
       - agenda-redis-data:/data
     networks:
       - agenda-net
 
 networks:
-  web:
-    name: web
+
   agenda-net:
 
 volumes:

@@ -1,15 +1,25 @@
 from dataclasses import dataclass
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.exceptions import UpdateUseCaseException
 from src.modules.Agenda.Aplication.events.CalendarEvent import UpdateDayEvent
 from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
 from src.modules.Agenda.Aplication.Ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
 from src.modules.Agenda.Domain.Entities import Day
+=======
+from src.modules.agenda.aplication.dtos.exceptions import UpdateUseCaseException
+from src.modules.agenda.aplication.dtos.useCase.output import UseCaseOutputDTO
+from src.modules.agenda.aplication.events.CalendarEvent import UpdateDayEvent
+from src.modules.agenda.aplication.ports.events.BusPort import BusPort
+from src.modules.agenda.aplication.ports.repository.CalendarRepositoryPort import CalendarRepositoryPort
+from src.modules.agenda.domain.entities import Day
+>>>>>>> example
 
 
 @dataclass(frozen=True)
 class UpdateDayCommand:
     id: str
     data: dict
+    triggered_by_id: str | None = None
 
 
 class UpdateDayUseCase:
@@ -17,16 +27,31 @@ class UpdateDayUseCase:
         self._repository = repository
         self._bus = bus
         
-    async def execute(self, command: UpdateDayCommand):
+    async def execute(self, command: UpdateDayCommand) -> UseCaseOutputDTO:
         try:
             data = await self._repository.get(command.id)
             if not isinstance(data, Day):
-                return False
+                return UseCaseOutputDTO.fail(
+                    use_case=self.__class__.__name__,
+                    action="update",
+                    resource="day",
+                    resource_id=command.id,
+                    triggered_by_id=command.triggered_by_id,
+                    message="Day not found",
+                )
             day = data
             dayUpdated = day.update(command.data)
             await self._repository.updateDay(dayUpdated)
-            self._bus.emit(UpdateDayEvent(dayUpdated))
-            return True
+            event = UpdateDayEvent.from_entity(dayUpdated, triggered_by_id=command.triggered_by_id)
+            await self._bus.emit(event)
+            return UseCaseOutputDTO.ok(
+                use_case=self.__class__.__name__,
+                action="updated",
+                resource="day",
+                resource_id=str(dayUpdated.date),
+                triggered_by_id=command.triggered_by_id,
+                event_name=event.EVENT_NAME,
+            )
         except Exception as e:
             raise UpdateUseCaseException(
                 code="UPDATE_DAY_ERROR",
@@ -34,5 +59,9 @@ class UpdateDayUseCase:
                 use_case=self.__class__.__name__,
                 context={"command": str(command)},
                 original=e,
+<<<<<<< HEAD
             ) from e
 
+=======
+            ) 
+>>>>>>> example

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.exceptions import CreateUseCaseException
 from src.modules.Agenda.Aplication.DTOs.useCase.command.RulesUseCasesDTO import CreateSpecificDayRuleCommand
 from src.modules.Agenda.Aplication.events.RuleEvent import CreateSpecificEntityRuleEvent
@@ -5,6 +6,16 @@ from src.modules.Agenda.Aplication.Ports.events.BusPort import BusPort
 from src.modules.Agenda.Aplication.Ports.repository import RuleRepositoryPort
 from src.modules.Agenda.Domain.rules import RuleEffect, SpecificDayRule, TargetType
 from src.modules.Agenda.Domain.ValueObjects import Date, RangeTime
+=======
+from src.modules.agenda.aplication.dtos.exceptions import CreateUseCaseException
+from src.modules.agenda.aplication.dtos.useCase.command.RulesUseCasesDTO import CreateSpecificDayRuleCommand
+from src.modules.agenda.aplication.dtos.useCase.output import UseCaseOutputDTO
+from src.modules.agenda.aplication.events.RuleEvent import CreateSpecificEntityRuleEvent
+from src.modules.agenda.aplication.ports.events.BusPort import BusPort
+from src.modules.agenda.aplication.ports.repository import RuleRepositoryPort
+from src.modules.agenda.domain.rules import RuleEffect, SpecificDayRule, TargetType
+from src.modules.agenda.domain.valueObjects import Date, RangeTime
+>>>>>>> example
 
 
 class CreateSpecificDayRuleUseCase:
@@ -12,7 +23,7 @@ class CreateSpecificDayRuleUseCase:
         self._repository = repository
         self._bus = bus
 
-    async def execute(self, command: CreateSpecificDayRuleCommand) -> bool:
+    async def execute(self, command: CreateSpecificDayRuleCommand) -> UseCaseOutputDTO:
         try:
             rule = SpecificDayRule(
                 ruleEffect=_effect(command.ruleEffect),
@@ -24,8 +35,16 @@ class CreateSpecificDayRuleUseCase:
                 nome=command.nome,
             )
             await self._repository.save(rule)
-            self._bus.emit(CreateSpecificEntityRuleEvent(rule))
-            return True
+            event = CreateSpecificEntityRuleEvent.from_entity(rule, triggered_by_id=command.triggered_by_id)
+            await self._bus.emit(event)
+            return UseCaseOutputDTO.ok(
+                use_case=self.__class__.__name__,
+                action="created",
+                resource="specific_day_rule",
+                resource_id=str(rule.id),
+                triggered_by_id=command.triggered_by_id,
+                event_name=event.EVENT_NAME,
+            )
         except Exception as e:
             raise CreateUseCaseException(
                 code="CREATE_SPECIFIC_ENTITY_RULE_ERROR",
@@ -37,7 +56,9 @@ class CreateSpecificDayRuleUseCase:
 
 
 def _effect(value: object) -> RuleEffect:
-    return value if isinstance(value, RuleEffect) else RuleEffect[str(value).upper()]
+    if isinstance(value, RuleEffect):
+        return value
+    return RuleEffect[_effect_key(value)]
 
 
 def _target_type(value: object) -> TargetType | None:
@@ -63,3 +84,20 @@ def _date(value: object) -> Date:
     year, month, day = str(value).split("-")
     return Date(day=int(day), month=int(month), year=int(year))
 
+<<<<<<< HEAD
+=======
+
+def _effect_key(value: object) -> str:
+    text = str(value).strip()
+    if "." in text:
+        text = text.rsplit(".", 1)[-1]
+    key = text.upper()
+    aliases = {
+        "ALLOW": "ADD",
+        "AVAILABLE": "ADD",
+        "DENY": "REMOVE",
+        "DISALLOW": "REMOVE",
+        "UNAVAILABLE": "REMOVE",
+    }
+    return aliases.get(key, key)
+>>>>>>> example

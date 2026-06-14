@@ -1,16 +1,31 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
+<<<<<<< HEAD
 from src.API.provider import (
+=======
+from src.api.provider import (
+    get_appointment_type_by_id_query_use_case,
+>>>>>>> example
     get_appointment_by_id_query_use_case,
     get_create_appointment_use_case,
     get_delete_appointment_use_case,
+    get_list_appointment_types_query_use_case,
+    get_list_appointments_by_doctor_query_use_case,
+    get_list_appointments_by_patient_query_use_case,
     get_list_appointments_query_use_case,
     get_update_appointment_use_case,
 )
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.useCase.command.AppointmentUseCasesDTO import (
     CreateAppointmentCommand,
     DeleteAppointmentCommand,
     UpdateAppointmentCommand,
+=======
+from src.api.interfaces.appointment import (
+    CreateAppointmentRequest,
+    DeleteAppointmentRequest,
+    UpdateAppointmentRequest,
+>>>>>>> example
 )
 from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
 
@@ -20,13 +35,54 @@ routerAppointment = APIRouter(prefix="/appointments", tags=["Appointments"])
 
 @routerAppointment.post("/", status_code=status.HTTP_201_CREATED)
 async def create_appointment(
-    command: CreateAppointmentCommand,
+    request: CreateAppointmentRequest,
     use_case=Depends(get_create_appointment_use_case),
 ):
+    command = request.to_command()
     result = await use_case.execute(command)
     if not result:
         raise HTTPException(status_code=400, detail="Appointment could not be created")
     return {"created": True}
+
+
+@routerAppointment.get("/types/")
+async def list_appointment_types(
+    limit: int | None = None,
+    offset: int = 0,
+    use_case=Depends(get_list_appointment_types_query_use_case),
+):
+    return await use_case.execute(ListQuery(limit=limit, offset=offset))
+
+
+@routerAppointment.get("/types/{type_id}")
+async def get_appointment_type(
+    type_id: str,
+    use_case=Depends(get_appointment_type_by_id_query_use_case),
+):
+    appointment_type = await use_case.execute(GetByIdQuery(id=type_id))
+    if not appointment_type:
+        raise HTTPException(status_code=404, detail="Appointment type not found")
+    return appointment_type
+
+
+@routerAppointment.get("/patient/{patient_id}")
+async def list_appointments_by_patient(
+    patient_id: str,
+    limit: int | None = None,
+    offset: int = 0,
+    use_case=Depends(get_list_appointments_by_patient_query_use_case),
+):
+    return await use_case.execute(patient_id, ListQuery(limit=limit, offset=offset))
+
+
+@routerAppointment.get("/doctor/{doctor_id}")
+async def list_appointments_by_doctor(
+    doctor_id: str,
+    limit: int | None = None,
+    offset: int = 0,
+    use_case=Depends(get_list_appointments_by_doctor_query_use_case),
+):
+    return await use_case.execute(doctor_id, ListQuery(limit=limit, offset=offset))
 
 
 @routerAppointment.get("/{appointment_id}")
@@ -52,9 +108,10 @@ async def list_appointments(
 @routerAppointment.put("/{appointment_id}")
 async def update_appointment(
     appointment_id: str,
-    command: UpdateAppointmentCommand,
+    request: UpdateAppointmentRequest,
     use_case=Depends(get_update_appointment_use_case),
 ):
+    command = request.to_command(appointment_id)
     result = await use_case.execute(command)
     if not result:
         raise HTTPException(status_code=404, detail="Appointment not found")
@@ -66,5 +123,9 @@ async def delete_appointment(
     appointment_id: str,
     use_case=Depends(get_delete_appointment_use_case),
 ):
+<<<<<<< HEAD
     await use_case.execute(DeleteAppointmentCommand(id=appointment_id))
 
+=======
+    await use_case.execute(DeleteAppointmentRequest().to_command(appointment_id))
+>>>>>>> example

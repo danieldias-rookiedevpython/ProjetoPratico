@@ -1,13 +1,19 @@
 from fastapi import APIRouter, Depends, status
-from pydantic import BaseModel
 
+<<<<<<< HEAD
 from src.API.provider import (
+=======
+from src.api.interfaces.calendar import CreateCalendarRequest, UpdateDayRequest
+from src.api.provider import (
+>>>>>>> example
     get_create_calendar_use_case,
     get_delete_calendar_use_case,
     get_day_by_id_query_use_case,
     get_list_days_query_use_case,
+    get_list_month_days_for_front_query_use_case,
     get_update_day_use_case,
 )
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListDaysQuery
 from src.modules.Agenda.Aplication.UseCases.commands.calendar.createCalendar import CreateCalendarCommand
 from src.modules.Agenda.Aplication.UseCases.commands.calendar.UpdateDay import UpdateDayCommand
@@ -21,6 +27,9 @@ class CreateCalendarRequest(BaseModel):
 class UpdateDayRequest(BaseModel):
     id: str
     data: dict
+=======
+from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListDaysQuery
+>>>>>>> example
 
 
 routerCalendar = APIRouter(prefix="/calendars", tags=["Calendars"])
@@ -28,10 +37,19 @@ routerCalendar = APIRouter(prefix="/calendars", tags=["Calendars"])
 
 @routerCalendar.post("/", status_code=status.HTTP_201_CREATED)
 async def create_calendar(
-    command: CreateCalendarRequest,
+    request: CreateCalendarRequest,
     use_case=Depends(get_create_calendar_use_case),
 ):
-    return await use_case.execute(CreateCalendarCommand(day=command.mes, ano=command.ano))
+    return await use_case.execute(request.to_command())
+
+
+@routerCalendar.get("/months/{year}/{month}/days")
+async def list_month_days_for_front(
+    year: int,
+    month: int,
+    use_case=Depends(get_list_month_days_for_front_query_use_case),
+):
+    return await use_case.execute(year, month)
 
 
 @routerCalendar.get("/days/{day_id}")
@@ -53,10 +71,10 @@ async def list_days(
 @routerCalendar.patch("/days/{day_id}")
 async def update_day(
     day_id: str,
-    command: UpdateDayRequest,
+    request: UpdateDayRequest,
     use_case=Depends(get_update_day_use_case),
 ):
-    current = await use_case.execute(UpdateDayCommand(id=day_id, data=command.data))
+    current = await use_case.execute(request.to_command(day_id))
     if current is None:
         return {"updated": False}
     return {"updated": True, "day": current}

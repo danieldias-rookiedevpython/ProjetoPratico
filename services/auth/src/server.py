@@ -1,16 +1,18 @@
 import sys
 import json
+from contextlib import asynccontextmanager
 
 import uvicorn
-from starlette.applications import Starlette
+from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette.routing import Route
 
 from .config import get_settings
 from .services.authorization import authorization_service
+from .services.event_log import init_db
 from .services.login import validateLoginService
 from .services.login import loginService
+from .observability import setup_observability
 from .services.tokenJwt import TokenService
 
 
@@ -78,13 +80,103 @@ async def health(_request: Request):
     return json_response({"status": "ok", "service": get_settings().APP_NAME})
 
 
-app = Starlette(
-    routes=[
-        Route("/health", endpoint=health, methods=["GET"]),
-        Route("/auth/validate", endpoint=forward_auth, methods=["GET"]),
-        Route("/auth/login", endpoint=login, methods=["POST"]),
-    ]
+@asynccontextmanager
+async def lifespan(_app):
+    init_db()
+    yield
+
+
+app = FastAPI(
+    title="Auth Service",
+    version="0.1.0",
+    description=(
+        "Servico de autenticacao e autorizacao. Emite tokens JWT no login e valida "
+        "tokens para o gateway, devolvendo headers X-User-Id e X-User-Role."
+    ),
+    openapi_tags=[
+        {"name": "health", "description": "Healthcheck do Auth Service."},
+        {"name": "auth", "description": "Login, validacao de token e decisao de autorizacao."},
+        {"name": "observability", "description": "Metricas HTTP do service."},
+    ],
+    lifespan=lifespan,
 )
+app.add_api_route(
+    "/health",
+    endpoint=health,
+    methods=["GET"],
+    tags=["health"],
+    summary="Healthcheck do Auth Service",
+    responses={200: {"description": "Servico saudavel", "content": {"application/json": {"example": {"status": "ok", "service": "auth-service"}}}}},
+)
+app.add_api_route(
+    "/auth/validate",
+    endpoint=forward_auth,
+    methods=["GET"],
+    tags=["auth"],
+    summary="Valida token e permissao da requisicao",
+    description="Usado pelo gateway. Espera Authorization: Bearer <token> e retorna headers X-User-Id e X-User-Role quando autorizado.",
+    responses={
+        200: {
+            "description": "Token valido e acesso autorizado. Body vazio.",
+            "headers": {
+                "X-User-Id": {"schema": {"type": "string"}, "description": "UUID do usuario autenticado."},
+                "X-User-Role": {"schema": {"type": "string"}, "description": "Role/cargo do usuario autenticado."},
+            },
+        },
+        401: {"description": "Header Authorization ausente."},
+        403: {"description": "Token invalido ou acesso negado."},
+        500: {"description": "Erro interno durante validacao."},
+    },
+)
+app.add_api_route(
+    "/auth/login",
+    endpoint=login,
+    methods=["POST"],
+    tags=["auth"],
+    summary="Autentica usuario e retorna tokens JWT",
+    openapi_extra={
+        "requestBody": {
+            "required": True,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "required": ["password"],
+                        "properties": {
+                            "email": {"type": "string", "example": "admin@clinica.local"},
+                            "name": {"type": "string", "example": "admin"},
+                            "password": {"type": "string", "example": "Admin123!"},
+                        },
+                    },
+                    "examples": {
+                        "email": {"summary": "Login por email", "value": {"email": "admin@clinica.local", "password": "Admin123!"}},
+                        "name": {"summary": "Login por username", "value": {"name": "admin", "password": "Admin123!"}},
+                    },
+                }
+            },
+        }
+    },
+    responses={
+        200: {
+            "description": "Login valido.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "user_id": "550e8400-e29b-41d4-a716-446655440000",
+                        "tokens": {
+                            "access_token": "<jwt>",
+                            "refresh_token": "<jwt>",
+                            "token_type": "Bearer",
+                        },
+                    }
+                }
+            },
+        },
+        400: {"description": "Body invalido ou incompleto."},
+        401: {"description": "Credenciais invalidas."},
+    },
+)
+setup_observability(app, get_settings().APP_NAME)
 
 
 def start():

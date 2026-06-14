@@ -18,4 +18,19 @@ class WebSocketGateway:
             "event": "appointment_scheduled",
             "appointment_id": appointment_id
         })
+<<<<<<< HEAD
 
+=======
+        
+    async def notify_day_loted(
+        self,
+        day: str
+    ):
+
+        await self.manager.broadcast({
+            "event": "day_loted",
+            "day": day
+        })
+        
+    
+>>>>>>> example

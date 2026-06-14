@@ -7,19 +7,24 @@ from src.API.provider import (
     get_list_doctors_query_use_case,
     get_update_doctor_use_case,
 )
+<<<<<<< HEAD
 from src.modules.Agenda.Aplication.DTOs.useCase.command.DoctorUseCasesDTO import (
     CreateDoctorCommand,
     UpdateDoctorCommand,
 )
 from src.modules.Agenda.Aplication.DTOs.useCase.query import GetByIdQuery, ListQuery
+=======
+from src.api.interfaces.doctor import CreateDoctorRequest, UpdateDoctorRequest
+from src.modules.agenda.aplication.dtos.useCase.query import GetByIdQuery, ListQuery
+>>>>>>> example
 
 
 routerDoctor = APIRouter(prefix="/doctors", tags=["Doctors"])
 
 
-@routerDoctor.post("/", status_code=status.HTTP_201_CREATED)
-async def create_doctor(command: CreateDoctorCommand, use_case=Depends(get_create_doctor_use_case)):
-    result = await use_case.execute(command)
+@routerDoctor.post("/", status_code=status.HTTP_201_CREATED, include_in_schema=False)
+async def create_doctor(request: CreateDoctorRequest, use_case=Depends(get_create_doctor_use_case)):
+    result = await use_case.execute(request.to_command())
     return {"created": result}
 
 
@@ -43,10 +48,10 @@ async def list_doctors(
 @routerDoctor.put("/{doctor_id}")
 async def update_doctor(
     doctor_id: str,
-    command: UpdateDoctorCommand,
+    request: UpdateDoctorRequest,
     use_case=Depends(get_update_doctor_use_case),
 ):
-    await use_case.execute(command)
+    await use_case.execute(request.to_command(doctor_id))
     return {"updated": True}
 
 

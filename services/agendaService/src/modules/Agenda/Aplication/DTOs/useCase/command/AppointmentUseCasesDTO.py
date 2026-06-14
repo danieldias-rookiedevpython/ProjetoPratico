@@ -10,16 +10,19 @@ class CreateAppointmentCommand:
     patient:str
     time:str
     type:str
-    room: str | None = None
+    triggered_by_id: str | None = None
+
     
     
 @dataclass(frozen=True)
 class DeleteAppointmentCommand:
     id: str
+    triggered_by_id: str | None = None
     
 @dataclass(frozen=True)
 class UpdateAppointmentCommand:
     id: str
+    triggered_by_id: str | None = None
 
 @dataclass(frozen=True)
 class UpdateAppointmentDateCommand:
@@ -27,10 +30,15 @@ class UpdateAppointmentDateCommand:
     nome:str 
     time:str
     date:str
+    triggered_by_id: str | None = None
     
 @dataclass(frozen=True)
 class CreateAppointmentTypeCommand:
     name: str
     duration: int
     description: str 
+<<<<<<< HEAD
 
+=======
+    triggered_by_id: str | None = None
+>>>>>>> example
